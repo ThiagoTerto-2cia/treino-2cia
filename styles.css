@@ -178,3 +178,22 @@ nav button:first-child{color:#ff3038}
 .finish-ex-row>span{color:#ff7c82;font-size:12px;font-weight:800;text-align:right}
 #progressSummary.stats{grid-template-columns:repeat(2,1fr)}
 @media(min-width:600px){#progressSummary.stats{grid-template-columns:repeat(4,1fr)}}
+
+/* V9 — Histórico detalhado e evolução */
+.muted{color:#aaa;font-size:.92rem}
+.workout-open{width:100%;text-align:left;background:transparent;color:inherit;border:0;cursor:pointer}
+.workout-open:active{transform:scale(.99)}
+.detail-ex{padding:14px 0;border-bottom:1px solid #333;display:flex;flex-direction:column;gap:7px}
+.detail-ex:last-child{border-bottom:0}
+.detail-ex>b{color:#ff6268;font-size:1.05rem}
+.detail-ex span{color:#ddd}
+.workout-summary h3{font-size:1.35rem;margin:.4rem 0 1rem}
+.period-row,.best{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid #333}
+.period-row:last-child,.best:last-child{border-bottom:0}
+.mini-chart{display:flex;flex-direction:column;gap:12px}
+.chart-row{display:grid;grid-template-columns:62px 1fr 76px;align-items:center;gap:10px;font-size:.82rem}
+.chart-row b{text-align:right}
+.bar-track{height:12px;border-radius:999px;background:#2b2b2b;overflow:hidden}
+.bar-track i{display:block;height:100%;background:linear-gradient(90deg,#e0000b,#ff4b52);border-radius:999px;min-width:4px}
+#progressExercise{width:100%;padding:13px;border-radius:12px;border:1px solid #444;background:#111;color:#fff;margin-bottom:16px;font-size:1rem}
+#weightField[style*="none"] + #repsField{grid-column:1/-1}

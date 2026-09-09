@@ -96,8 +96,8 @@
     <div class="card">
       <h3 id="setLabel">Série 1</h3>
       <div class="grid2">
-        <label>Carga (kg)<input id="weight" type="number" min="0" step=".5"></label>
-        <label>Repetições<input id="reps" type="number" min="1"></label>
+        <label id="weightField">Carga (kg)<input id="weight" type="number" min="0" step=".5"></label>
+        <label id="repsField"><span id="repsLabel">Repetições</span><input id="reps" type="number" min="1"></label>
       </div>
       <button class="big red" onclick="completeSet()">CONCLUIR SÉRIE</button>
        <button id="nextExerciseBtn" class="big next-ex" style="display:none" onclick="nextPlanExercise()">PRÓXIMO EXERCÍCIO</button>
@@ -127,12 +127,19 @@
   <section id="history" class="view">
     <div class="bar"><button onclick="showView('home')">←</button><h2>Histórico</h2></div>
     <div id="historyList"></div>
+    <div id="historyDetail" style="display:none"></div>
   </section>
 
   <section id="progress" class="view">
     <div class="bar"><button onclick="showView('home')">←</button><h2>Evolução</h2></div>
     <div id="progressSummary" class="stats"></div>
+    <div class="card"><h3>Treinos por período</h3><div id="periodStats"></div></div>
+    <div class="card"><h3>Volume dos últimos treinos</h3><div id="volumeChart" class="mini-chart"></div></div>
     <div class="card"><h3>Melhores cargas</h3><div id="bestLoads"></div></div>
+    <div class="card"><h3>Evolução por exercício</h3>
+      <select id="progressExercise" onchange="renderExerciseProgress(this.value)"></select>
+      <div id="exerciseProgressChart" class="mini-chart"></div>
+    </div>
   </section>
 
   <section id="stretch" class="view">
@@ -180,6 +187,6 @@
 </nav>
 
 <script src="data.js"></script>
-<script src="app.js?v=8.0"></script>
+<script src="app.js?v=9.0"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE='t2cia-v8.0';
+const CACHE='t2cia-v9';
 const SHELL=['./','index.html','styles.css','data.js','app.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html'];
 
 self.addEventListener('install',event=>{
