@@ -400,3 +400,11 @@ nav button:first-child{color:#ff3038}
 
 /* V20 - padronização das fotos do Treino A */
 .visual .imgbox img.realistic-exercise{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center}
+
+/* ===== V21 IMAGENS REALISTAS — TREINO B ===== */
+.visual .imgbox img.realistic-exercise{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  object-position:center;
+}
