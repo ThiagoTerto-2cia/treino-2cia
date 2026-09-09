@@ -232,3 +232,30 @@ nav button:first-child{color:#ff3038}
 .compare-box span{color:#aaa}.compare-box b{text-align:right}
 .compare-up b{color:#79e78f}.compare-down b{color:#ff7373}.compare-flat b{color:#ddd}
 .finish-comparison{margin:12px 0}
+
+
+/* ===== V14 PR PREMIUM + REGISTROS AVULSOS ===== */
+.pr-toast small{display:block;margin-top:5px;color:#ffe8a8;font-size:11px}
+.premium-pr{
+  background:
+    radial-gradient(circle at 100% 0,rgba(210,155,20,.12),transparent 34%),
+    rgba(20,20,20,.97);
+  border-left-color:#d5a223
+}
+.pr-card{padding:12px 0;border-bottom:1px solid #333}
+.pr-card:last-child{border-bottom:0}
+.pr-main{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center}
+.pr-medal{font-size:24px}
+.pr-name b{display:block;font-size:15px}
+.pr-name small{display:block;color:#8f8f8f;margin-top:3px}
+.pr-weight{font-size:18px;font-weight:900;color:#ffd25b}
+.pr-meta{
+  margin:8px 0 0 44px;padding:8px 10px;border-radius:9px;
+  background:#111;border:1px solid #2f2f2f;color:#aaa;font-size:11px
+}
+.pr-meta span{color:#777;margin:0 4px}.pr-meta strong{color:#79e78f;margin-left:6px}
+.standalone-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 0;border-bottom:1px solid #2e2e2e}
+.standalone-row:last-child{border-bottom:0}
+.standalone-row span{font-weight:700}
+.standalone-row b{color:#ff7a80}
+.standalone-row small{grid-column:1/-1;color:#888}

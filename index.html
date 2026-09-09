@@ -139,7 +139,8 @@
     <div class="card"><h3>Treinos por período</h3><div id="periodStats"></div></div>
     <div class="card"><h3>Volume dos últimos treinos</h3><div id="volumeChart" class="mini-chart"></div></div>
     <div class="card"><h3>Melhores cargas</h3><div id="bestLoads"></div></div>
-    <div class="card"><h3>Recordes pessoais</h3><div id="personalRecords"></div></div>
+    <div class="card premium-pr"><h3>Recordes pessoais</h3><p class="muted">Somente recordes feitos dentro de treinos válidos entram aqui.</p><div id="personalRecords"></div></div>
+    <div class="card"><h3>Registros avulsos</h3><p class="muted">Séries feitas fora de um treino ficam separadas e não alteram os recordes oficiais.</p><div id="standaloneRecords"></div></div>
     <div class="card"><h3>Evolução por exercício</h3>
       <select id="progressExercise" onchange="renderExerciseProgress(this.value)"></select>
       <div id="exerciseProgressChart" class="mini-chart"></div>
@@ -191,6 +192,6 @@
 </nav>
 
 <script src="data.js"></script>
-<script src="app.js?v=13.0"></script>
+<script src="app.js?v=14.0"></script>
 </body>
 </html>

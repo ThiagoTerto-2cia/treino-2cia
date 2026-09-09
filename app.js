@@ -370,7 +370,10 @@ function completeSet(){
   if(wasPR && weight>0){
     const toast=byId('prToast');
     if(toast){
-      toast.innerHTML=`🏆 <b>NOVO RECORDE</b><span>${currentExercise.name}: ${weight} kg</span>`;
+      const prev=previousBestBefore(currentExercise.name,new Date().toISOString());
+      const diff=prev>0?weight-prev:0;
+      const pct=prev>0?diff/prev*100:null;
+      toast.innerHTML=`🏆 <b>NOVO RECORDE</b><span>${currentExercise.name}: ${weight} kg</span>${prev>0?`<small>${prev} → ${weight} kg • +${diff.toFixed(diff%1?1:0)} kg • +${pct.toFixed(1)}%</small>`:''}`;
       toast.classList.add('show');
       setTimeout(()=>toast.classList.remove('show'),3200);
     }
@@ -455,8 +458,27 @@ function closeWorkoutHistory(){
   byId('historyDetail').style.display='none';byId('historyList').style.display='block';scrollTo({top:0,behavior:'smooth'});
 }
 
+
+function validTrainingSets(){
+  return reliableWorkouts().flatMap(w=>getWorkoutSets(w));
+}
+function standaloneSets(){
+  return history().filter(x=>!x.plan);
+}
+function exercisePRHistory(exercise){
+  return validTrainingSets()
+    .filter(x=>x.exercise===exercise && Number(x.weight)>0 && !isLegacyRangeValue(x.reps))
+    .slice()
+    .sort((a,b)=>new Date(a.date)-new Date(b.date));
+}
+function previousBestBefore(exercise,date){
+  const t=new Date(date).getTime();
+  const vals=exercisePRHistory(exercise).filter(x=>new Date(x.date).getTime()<t).map(x=>Number(x.weight));
+  return vals.length?Math.max(...vals):0;
+}
+
 function personalRecords(){
-  const sets=reliableWorkouts().flatMap(w=>getWorkoutSets(w));
+  const sets=validTrainingSets();
   const prs={};
   sets.forEach(x=>{
     const ex=exByName(x.exercise);
@@ -467,7 +489,12 @@ function personalRecords(){
       }
     }
   });
-  return Object.values(prs).sort((a,b)=>b.weight-a.weight);
+  return Object.values(prs).map(p=>{
+    const prev=previousBestBefore(p.exercise,p.date);
+    const gain=prev>0?p.weight-prev:0;
+    const pct=prev>0?gain/prev*100:null;
+    return {...p,previous:prev,gain,pct};
+  }).sort((a,b)=>b.weight-a.weight);
 }
 function previousWorkoutSamePlan(current){
   const wh=reliableWorkouts().slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -530,7 +557,15 @@ function renderProgress(){
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
   const prs=personalRecords();
   const prBox=byId('personalRecords');
-  if(prBox) prBox.innerHTML=prs.length?prs.slice(0,12).map(p=>`<div class="pr-row"><span>🏆 ${p.exercise}</span><b>${p.weight} kg</b><small>${new Date(p.date).toLocaleDateString('pt-BR')}</small></div>`).join(''):'<p class="muted">Registre cargas para criar seus recordes pessoais.</p>';
+  if(prBox) prBox.innerHTML=prs.length?prs.slice(0,12).map(p=>`
+    <div class="pr-card">
+      <div class="pr-main">
+        <span class="pr-medal">🏆</span>
+        <div class="pr-name"><b>${p.exercise}</b><small>${new Date(p.date).toLocaleDateString('pt-BR')}</small></div>
+        <div class="pr-weight">${p.weight} kg</div>
+      </div>
+      <div class="pr-meta">${p.previous>0?`Anterior: ${p.previous} kg <span>→</span> Atual: ${p.weight} kg <strong>+${p.gain.toFixed(p.gain%1?1:0)} kg • +${p.pct.toFixed(1)}%</strong>`:'Primeiro recorde válido registrado'}</div>
+    </div>`).join(''):'<p class="muted">Registre cargas para criar seus recordes pessoais.</p>';
 
   const recent=wh.slice(0,8).reverse();
   const maxVol=Math.max(1,...recent.map(x=>Number(x.volume||0)));
@@ -538,6 +573,12 @@ function renderProgress(){
     const pct=Math.max(4,Math.round(Number(x.volume||0)/maxVol*100));
     return `<div class="chart-row"><span>${String(x.plan).split('—')[0].trim()}</span><div class="bar-track"><i style="width:${pct}%"></i></div><b>${Math.round(Number(x.volume||0)).toLocaleString('pt-BR')} kg</b></div>`;
   }).join(''):'<p class="muted">Conclua treinos para gerar o gráfico.</p>';
+
+  const avulsos=standaloneSets().filter(x=>Number(x.weight)>0 && !isBodyweightName(x.exercise));
+  const avBox=byId('standaloneRecords');
+  if(avBox){
+    avBox.innerHTML=avulsos.length?avulsos.slice(0,10).map(x=>`<div class="standalone-row"><span>${x.exercise}</span><b>${x.weight} kg • ${x.reps} reps</b><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join(''):'<p class="muted">Nenhum registro avulso.</p>';
+  }
 
   const names=[...new Set(reliableSets.filter(x=>
     Number(x.weight)>0 &&
@@ -577,4 +618,4 @@ const params=new URLSearchParams(location.search);const direct=Number(params.get
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v13.0');
+localStorage.setItem('t2_app_version','v14.0');
