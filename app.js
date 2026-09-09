@@ -1,6 +1,7 @@
 
 const DATA=window.APP_DATA;
 let currentGroup="", currentListMode="group", currentExercise=null, currentSet=1, timer=90, tick=null;
+let activePlanName="", activePlanExercises=[], activePlanIndex=-1, workoutStartedAt=null;
 
 const byId=id=>document.getElementById(id);
 function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));byId(id).classList.add('active');scrollTo({top:0,behavior:'smooth'})}
@@ -34,16 +35,61 @@ function openPlan(name){
     return;
   }
   currentListMode='plan';
+  activePlanName=name;
+  activePlanExercises=plan.map(exByName).filter(Boolean);
+  activePlanIndex=-1;
   byId('listTitle').textContent=name;
-  const list=plan.map(exByName).filter(Boolean);
-  renderExerciseButtons(list);
+  renderExerciseButtons(activePlanExercises);
+  const startBox=byId('planStartBox');
+  if(startBox) startBox.innerHTML=`<button class="big red plan-start" onclick="startPlanWorkout()">▶ INICIAR ${name.split('—')[0].trim()}</button><small>${activePlanExercises.length} exercícios • registro série por série</small>`;
   showView('list');
 }
 function goListBack(){showView(currentListMode==="plan"?"plans":"groups")}
 function renderExerciseButtons(list){
-  byId('exerciseList').innerHTML=list.map((x,i)=>`<button class="rowbtn" onclick="openExercise(${x.id})"><b>${i+1}. ${x.name}</b><span>${x.sets} séries • ${x.reps} • descanso ${x.rest}s</span></button>`).join('');
+  byId('exerciseList').innerHTML=list.map((x,i)=>`<button class="rowbtn" onclick="${currentListMode==='plan'?`openPlanExercise(${i})`:`openExercise(${x.id})`}"><b>${i+1}. ${x.name}</b><span>${x.sets} séries • ${x.reps} • descanso ${x.rest}s</span></button>`).join('');
 }
-function openExercise(id){
+
+function startPlanWorkout(){
+  if(!activePlanExercises.length)return;
+  workoutStartedAt=new Date().toISOString();
+  activePlanIndex=0;
+  localStorage.setItem('t2_active_plan',JSON.stringify({name:activePlanName,index:0,startedAt:workoutStartedAt}));
+  openExercise(activePlanExercises[0].id,true);
+}
+function openPlanExercise(index){
+  if(!activePlanExercises[index])return;
+  activePlanIndex=index;
+  if(!workoutStartedAt) workoutStartedAt=new Date().toISOString();
+  openExercise(activePlanExercises[index].id,true);
+}
+function workoutHistory(){return JSON.parse(localStorage.getItem('t2_workouts')||'[]')}
+function saveWorkoutHistory(h){localStorage.setItem('t2_workouts',JSON.stringify(h))}
+function finishPlanWorkout(){
+  const ended=new Date();
+  const started=workoutStartedAt?new Date(workoutStartedAt):ended;
+  const minutes=Math.max(1,Math.round((ended-started)/60000));
+  const wh=workoutHistory();
+  wh.unshift({date:ended.toISOString(),plan:activePlanName,duration:minutes,exercises:activePlanExercises.length});
+  saveWorkoutHistory(wh);
+  localStorage.setItem('t2_last',`${activePlanName} • concluído • ${minutes} min`);
+  localStorage.removeItem('t2_active_plan');
+  pauseTimer();
+  updateLast();
+  byId('finishPlanName').textContent=activePlanName;
+  byId('finishPlanStats').textContent=`${activePlanExercises.length} exercícios • ${minutes} min`;
+  activePlanIndex=-1; workoutStartedAt=null;
+  showView('workoutDone');
+}
+function nextPlanExercise(){
+  if(activePlanIndex<0)return;
+  if(activePlanIndex < activePlanExercises.length-1){
+    activePlanIndex++;
+    localStorage.setItem('t2_active_plan',JSON.stringify({name:activePlanName,index:activePlanIndex,startedAt:workoutStartedAt}));
+    openExercise(activePlanExercises[activePlanIndex].id,true);
+  }else finishPlanWorkout();
+}
+
+function openExercise(id,inPlan=false){
   currentExercise=DATA.exercises.find(x=>x.id===id); if(!currentExercise)return;
   currentGroup=currentExercise.group;currentSet=1;timer=currentExercise.rest;pauseTimer();
   byId('exTitle').textContent=currentExercise.name;
@@ -53,7 +99,17 @@ function openExercise(id){
   byId('exPrescription').textContent=`${currentExercise.sets} x ${currentExercise.reps}`;
   byId('exTip').textContent=currentExercise.tip;byId('exAvoid').textContent=currentExercise.avoid;
   byId('setLabel').textContent=`Série 1 de ${currentExercise.sets}`;byId('weight').value=getLastWeight(currentExercise.name)||"";
-  byId('reps').value="";updateClock();showView('exercise');
+  byId('reps').value="";
+  const wp=byId('workoutProgress');
+  if(wp){
+    if(inPlan && activePlanIndex>=0){
+      wp.style.display='block';
+      byId('workoutPlanLabel').textContent=activePlanName;
+      byId('workoutStepLabel').textContent=`Exercício ${activePlanIndex+1} de ${activePlanExercises.length}`;
+    }else wp.style.display='none';
+  }
+  const next=byId('nextExerciseBtn'); if(next) next.style.display='none';
+  updateClock();showView('exercise');
 }
 function history(){return JSON.parse(localStorage.getItem('t2_history')||'[]')}
 function saveHistory(h){localStorage.setItem('t2_history',JSON.stringify(h))}
@@ -61,9 +117,33 @@ function getLastWeight(name){const h=history().find(x=>x.exercise===name&&Number
 function completeSet(){
   if(!currentExercise)return;
   const weight=Number(byId('weight').value||0), reps=byId('reps').value||currentExercise.reps;
-  const h=history();h.unshift({date:new Date().toISOString(),group:currentExercise.group,exercise:currentExercise.name,set:currentSet,weight,reps});
-  saveHistory(h);localStorage.setItem('t2_last',`${currentExercise.group} • ${currentExercise.name} • ${weight} kg • ${reps} reps`);updateLast();
-  if(currentSet<currentExercise.sets){currentSet++;byId('setLabel').textContent=`Série ${currentSet} de ${currentExercise.sets}`;resetTimer();startTimer()}else{pauseTimer();alert("Exercício concluído. Bom treino!")}
+  const h=history();
+  h.unshift({
+    date:new Date().toISOString(),group:currentExercise.group,exercise:currentExercise.name,
+    set:currentSet,weight,reps,plan:activePlanIndex>=0?activePlanName:""
+  });
+  saveHistory(h);
+  localStorage.setItem('t2_last',`${currentExercise.group} • ${currentExercise.name} • ${weight} kg • ${reps} reps`);
+  updateLast();
+
+  if(currentSet<currentExercise.sets){
+    currentSet++;
+    byId('setLabel').textContent=`Série ${currentSet} de ${currentExercise.sets}`;
+    byId('reps').value="";
+    resetTimer();startTimer();
+  }else{
+    pauseTimer();
+    const btn=byId('nextExerciseBtn');
+    if(activePlanIndex>=0 && btn){
+      btn.style.display='block';
+      btn.textContent=activePlanIndex<activePlanExercises.length-1
+        ? `PRÓXIMO EXERCÍCIO → ${activePlanExercises[activePlanIndex+1].name}`
+        : 'FINALIZAR TREINO ✓';
+      btn.scrollIntoView({behavior:'smooth',block:'center'});
+    }else{
+      alert("Exercício concluído. Bom treino!");
+    }
+  }
 }
 function updateClock(){byId('clock').textContent=`${String(Math.floor(timer/60)).padStart(2,'0')}:${String(timer%60).padStart(2,'0')}`}
 function startTimer(){if(tick)return;tick=setInterval(()=>{timer=Math.max(0,timer-1);updateClock();if(timer===0){pauseTimer();if(navigator.vibrate)navigator.vibrate([250,100,250])}},1000)}
@@ -71,12 +151,16 @@ function pauseTimer(){clearInterval(tick);tick=null}
 function resetTimer(){pauseTimer();timer=currentExercise?currentExercise.rest:90;updateClock()}
 function updateLast(){byId('lastWorkout').textContent=localStorage.getItem('t2_last')||"Nenhum treino registrado."}
 function renderHistory(){
-  const h=history();byId('historyList').innerHTML=h.length?h.slice(0,100).map(x=>`<div class="hist"><b>${x.exercise}</b><br>${x.group} • Série ${x.set} • ${x.weight} kg • ${x.reps} reps<br><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join(''):'<div class="card">Nenhum registro ainda.</div>'
+  const h=history(), wh=workoutHistory();
+  let out='';
+  if(wh.length) out+=`<div class="card"><h3>Treinos concluídos</h3>${wh.slice(0,20).map(x=>`<div class="workout-hist"><b>${x.plan}</b><span>${x.exercises} exercícios • ${x.duration} min</span><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join('')}</div>`;
+  out+=h.length?h.slice(0,100).map(x=>`<div class="hist"><b>${x.exercise}</b><br>${x.group} • Série ${x.set} • ${x.weight} kg • ${x.reps} reps${x.plan?`<br><small>${x.plan}</small>`:''}<br><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join(''):'<div class="card">Nenhum registro ainda.</div>';
+  byId('historyList').innerHTML=out;
 }
 function renderProgress(){
-  const h=history(), days=new Set(h.map(x=>x.date.slice(0,10))), month=new Date().toISOString().slice(0,7);
+  const h=history(), wh=workoutHistory(), days=new Set(h.map(x=>x.date.slice(0,10))), month=new Date().toISOString().slice(0,7);
   const monthDays=new Set(h.filter(x=>x.date.startsWith(month)).map(x=>x.date.slice(0,10)));
-  byId('progressSummary').innerHTML=`<div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div><div class="stat"><strong>${monthDays.size}</strong><small>dias no mês</small></div>`;
+  byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos</small></div><div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div>`;
   const best={};h.forEach(x=>{if(Number(x.weight)>0)best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight))});
   const rows=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,15);
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
@@ -92,7 +176,7 @@ function exportHistory(){
 function importHistory(ev){
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!Array.isArray(o.history))throw 0;saveHistory(o.history);alert('Histórico importado com sucesso.');renderHistory()}catch(e){alert('Arquivo de backup inválido.')}};r.readAsText(f)
 }
-function clearData(){if(confirm('Apagar todo o histórico deste celular?')){localStorage.removeItem('t2_history');localStorage.removeItem('t2_last');updateLast();alert('Histórico apagado.')}}
+function clearData(){if(confirm('Apagar todo o histórico deste celular?')){localStorage.removeItem('t2_history');localStorage.removeItem('t2_workouts');localStorage.removeItem('t2_active_plan');localStorage.removeItem('t2_last');updateLast();alert('Histórico apagado.')}}
 function copyCurrentBase(){navigator.clipboard?.writeText(location.origin+location.pathname).then(()=>alert('Endereço copiado.')).catch(()=>alert(location.origin+location.pathname))}
 updateLast();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
@@ -100,4 +184,4 @@ const params=new URLSearchParams(location.search);const direct=Number(params.get
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v6.2');
+localStorage.setItem('t2_app_version','v7.0');

@@ -76,10 +76,13 @@
 
   <section id="list" class="view">
     <div class="bar"><button onclick="goListBack()">←</button><h2 id="listTitle"></h2></div>
-    <div id="exerciseList" class="stack"></div>
+    <div id="planStartBox" class="plan-start-box"></div><div id="exerciseList" class="stack"></div>
   </section>
 
   <section id="exercise" class="view">
+    <div id="workoutProgress" class="workout-progress" style="display:none">
+      <span id="workoutPlanLabel"></span><b id="workoutStepLabel"></b>
+    </div>
     <div class="bar"><button onclick="showView('list')">←</button><h2 id="exTitle"></h2></div>
     <div class="visual">
       <div class="imgbox"><span>1</span><img id="imgStart" alt="Posição inicial"><b>POSIÇÃO INICIAL</b></div>
@@ -97,6 +100,7 @@
         <label>Repetições<input id="reps" type="number" min="1"></label>
       </div>
       <button class="big red" onclick="completeSet()">CONCLUIR SÉRIE</button>
+       <button id="nextExerciseBtn" class="big next-ex" style="display:none" onclick="nextPlanExercise()">PRÓXIMO EXERCÍCIO</button>
     </div>
     <div class="card timer">
       <div class="eyebrow">DESCANSO</div>
@@ -106,6 +110,17 @@
         <button onclick="pauseTimer()">Pausar</button>
         <button onclick="resetTimer()">Reiniciar</button>
       </div>
+    </div>
+  </section>
+
+  <section id="workoutDone" class="view">
+    <div class="done-card">
+      <div class="done-check">✓</div>
+      <div class="eyebrow">TREINO CONCLUÍDO</div>
+      <h2 id="finishPlanName">Treino concluído</h2>
+      <p id="finishPlanStats"></p>
+      <button class="big red" onclick="showView('home')">VOLTAR AO INÍCIO</button>
+      <button class="big" onclick="showView('history');renderHistory()">VER HISTÓRICO</button>
     </div>
   </section>
 
@@ -165,6 +180,6 @@
 </nav>
 
 <script src="data.js"></script>
-<script src="app.js?v=6.3"></script>
+<script src="app.js?v=7.0"></script>
 </body>
 </html>
