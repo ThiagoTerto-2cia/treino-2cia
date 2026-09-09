@@ -16,7 +16,15 @@ function openGroup(g){
   renderExerciseButtons(DATA.exercises.filter(x=>x.group===g));showView('list');
 }
 function openPlans(){
-  byId('planGrid').innerHTML=Object.entries(DATA.plans).map(([name,list])=>`<button class="rowbtn" onclick="openPlan(${JSON.stringify(name)})"><b>${name}</b><span>${list.length} exercícios</span></button>`).join('');
+  const grid=byId('planGrid');
+  grid.innerHTML='';
+  Object.entries(DATA.plans).forEach(([name,list])=>{
+    const btn=document.createElement('button');
+    btn.className='rowbtn';
+    btn.innerHTML=`<b>${name}</b><span>${list.length} exercícios</span>`;
+    btn.addEventListener('click',()=>openPlan(name));
+    grid.appendChild(btn);
+  });
   showView('plans');
 }
 function openPlan(name){
