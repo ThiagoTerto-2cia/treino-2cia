@@ -76,14 +76,14 @@ function getActiveWorkoutMetrics(){
   const by={};
   let totalReps=0,totalVolume=0;
   relevant.forEach(x=>{
-    const repsNum=Number(x.reps)||0;
+    const repsNum=numericRepValue(x.reps);
     const weightNum=Number(x.weight)||0;
     totalReps+=repsNum;
-    totalVolume+=weightNum*repsNum;
+    totalVolume+=weightNum>0?weightNum*repsNum:0;
     if(!by[x.exercise]) by[x.exercise]={name:x.exercise,sets:0,reps:0,volume:0,maxWeight:0};
     by[x.exercise].sets++;
     by[x.exercise].reps+=repsNum;
-    by[x.exercise].volume+=weightNum*repsNum;
+    by[x.exercise].volume+=weightNum>0?weightNum*repsNum:0;
     by[x.exercise].maxWeight=Math.max(by[x.exercise].maxWeight,weightNum);
   });
   return {
@@ -152,6 +152,74 @@ function nextPlanExercise(){
 }
 
 
+
+function numericRepValue(value){
+  if(typeof value==='number' && Number.isFinite(value)) return value;
+  const s=String(value??'').trim().replace(',','.');
+  if(!s) return 0;
+  const exact=Number(s);
+  if(Number.isFinite(exact)) return exact;
+  const m=s.match(/\d+(?:\.\d+)?/);
+  return m?Number(m[0]):0;
+}
+function setVolume(x){
+  const w=Number(x.weight||0);
+  const r=numericRepValue(x.reps);
+  return w>0 && r>0 ? w*r : 0;
+}
+function getWorkoutSets(w){
+  const all=history();
+  const end=new Date(w.date).getTime();
+  let start=w.startedAt?new Date(w.startedAt).getTime():NaN;
+  if(!Number.isFinite(start)){
+    // Fallback for older records: use the previous completed workout as lower bound.
+    const wh=workoutHistory();
+    const idx=wh.findIndex(x=>x.date===w.date && x.plan===w.plan);
+    if(idx>=0 && wh[idx+1]) start=new Date(wh[idx+1].date).getTime()+1;
+    else start=end-6*60*60*1000;
+  }
+  return all.filter(x=>{
+    const t=new Date(x.date).getTime();
+    return x.plan===w.plan && t>=start && t<=end;
+  });
+}
+function deriveWorkoutMetrics(w){
+  const sets=getWorkoutSets(w);
+  const by={};
+  let volume=0,reps=0;
+  sets.forEach(x=>{
+    volume+=setVolume(x);
+    reps+=numericRepValue(x.reps);
+    if(!by[x.exercise]) by[x.exercise]={name:x.exercise,sets:0,reps:0,volume:0,maxWeight:0};
+    by[x.exercise].sets++;
+    by[x.exercise].reps+=numericRepValue(x.reps);
+    by[x.exercise].volume+=setVolume(x);
+    by[x.exercise].maxWeight=Math.max(by[x.exercise].maxWeight,Number(x.weight||0));
+  });
+  return {
+    sets:sets.length,
+    reps,
+    volume:Math.round(volume*10)/10,
+    exercisesDone:Object.keys(by).length,
+    byExercise:Object.values(by)
+  };
+}
+function reconcileWorkoutHistory(){
+  const wh=workoutHistory();
+  let changed=false;
+  wh.forEach(w=>{
+    const d=deriveWorkoutMetrics(w);
+    if((!Number(w.sets)||Number(w.sets)===0) && d.sets){w.sets=d.sets;changed=true}
+    if((!Number(w.exercisesDone)||Number(w.exercisesDone)===0) && d.exercisesDone){w.exercisesDone=d.exercisesDone;changed=true}
+    // Recompute volume whenever we can derive a better value from the raw set history.
+    if(d.volume>0 && Number(w.volume||0)!==d.volume){w.volume=d.volume;changed=true}
+    if(d.byExercise.length && (!Array.isArray(w.byExercise)||!w.byExercise.length)){w.byExercise=d.byExercise;changed=true}
+    if(d.reps>0 && !Number(w.reps)){w.reps=d.reps;changed=true}
+  });
+  if(changed) saveWorkoutHistory(wh);
+  return wh;
+}
+
 function isTimedExercise(ex){
   if(!ex) return false;
   const r=String(ex.reps||'').toLowerCase();
@@ -208,7 +276,20 @@ function saveHistory(h){localStorage.setItem('t2_history',JSON.stringify(h))}
 function getLastWeight(name){const h=history().find(x=>x.exercise===name&&Number(x.weight)>0);return h?h.weight:""}
 function completeSet(){
   if(!currentExercise)return;
-  const weight=Number(byId('weight').value||0), reps=byId('reps').value||currentExercise.reps;
+  const timed=isTimedExercise(currentExercise), bodyweight=isBodyweightExercise(currentExercise);
+  const repsRaw=String(byId('reps').value||'').trim();
+  if(!repsRaw){
+    alert(timed?'Informe o tempo realizado em segundos.':'Informe quantas repetições você realizou.');
+    byId('reps').focus();
+    return;
+  }
+  const reps=numericRepValue(repsRaw);
+  if(!(reps>0)){
+    alert(timed?'Informe um tempo válido em segundos.':'Informe uma quantidade válida de repetições.');
+    byId('reps').focus();
+    return;
+  }
+  const weight=bodyweight?0:Number(byId('weight').value||0);
   const h=history();
   h.unshift({
     date:new Date().toISOString(),group:currentExercise.group,exercise:currentExercise.name,
@@ -244,7 +325,7 @@ function pauseTimer(){clearInterval(tick);tick=null}
 function resetTimer(){pauseTimer();timer=currentExercise?currentExercise.rest:90;updateClock()}
 function updateLast(){byId('lastWorkout').textContent=localStorage.getItem('t2_last')||"Nenhum treino registrado."}
 function renderHistory(){
-  const h=history(), wh=workoutHistory();
+  const h=history(), wh=reconcileWorkoutHistory();
   const detail=byId('historyDetail'); if(detail) detail.style.display='none';
   const list=byId('historyList'); if(list) list.style.display='block';
   let out='';
@@ -260,7 +341,7 @@ function renderHistory(){
   byId('historyList').innerHTML=out;
 }
 function openWorkoutHistory(index){
-  const wh=workoutHistory(), w=wh[index]; if(!w)return;
+  const wh=reconcileWorkoutHistory(), w=wh[index]; if(!w)return;
   const all=history();
   const start=w.startedAt?new Date(w.startedAt).getTime():0, end=new Date(w.date).getTime();
   let sets=all.filter(x=>{
@@ -294,7 +375,7 @@ function closeWorkoutHistory(){
   byId('historyDetail').style.display='none';byId('historyList').style.display='block';scrollTo({top:0,behavior:'smooth'});
 }
 function renderProgress(){
-  const h=history(), wh=workoutHistory(), now=new Date();
+  const h=history(), wh=reconcileWorkoutHistory(), now=new Date();
   const days=new Set(h.map(x=>x.date.slice(0,10)));
   const totalVolume=wh.reduce((sum,x)=>sum+Number(x.volume||0),0);
   byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos</small></div><div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div><div class="stat"><strong>${Math.round(totalVolume).toLocaleString('pt-BR')}</strong><small>kg de volume</small></div>`;
@@ -304,7 +385,10 @@ function renderProgress(){
   const month=wh.filter(x=>new Date(x.date).getTime()>=monthAgo).length;
   byId('periodStats').innerHTML=`<div class="period-row"><span>Últimos 7 dias</span><b>${week} treino${week===1?'':'s'}</b></div><div class="period-row"><span>Últimos 30 dias</span><b>${month} treino${month===1?'':'s'}</b></div>`;
 
-  const best={};h.forEach(x=>{if(Number(x.weight)>0)best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight))});
+  const best={};h.forEach(x=>{
+    const ex=exByName(x.exercise);
+    if(Number(x.weight)>0 && !isBodyweightExercise(ex)) best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight));
+  });
   const rows=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,15);
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
 
@@ -315,7 +399,7 @@ function renderProgress(){
     return `<div class="chart-row"><span>${String(x.plan).split('—')[0].trim()}</span><div class="bar-track"><i style="width:${pct}%"></i></div><b>${Math.round(Number(x.volume||0)).toLocaleString('pt-BR')} kg</b></div>`;
   }).join(''):'<p class="muted">Conclua treinos para gerar o gráfico.</p>';
 
-  const names=[...new Set(h.filter(x=>Number(x.weight)>0).map(x=>x.exercise))].sort();
+  const names=[...new Set(h.filter(x=>Number(x.weight)>0 && !isBodyweightExercise(exByName(x.exercise))).map(x=>x.exercise))].sort();
   const sel=byId('progressExercise');
   sel.innerHTML=names.length?names.map(n=>`<option value="${n.replaceAll('"','&quot;')}">${n}</option>`).join(''):'<option>Sem dados</option>';
   if(names.length) renderExerciseProgress(names[0]); else byId('exerciseProgressChart').innerHTML='<p class="muted">Registre cargas para acompanhar a evolução.</p>';
@@ -332,7 +416,7 @@ function renderStretch(){
   byId('stretchList').innerHTML=list.map(x=>`<button class="rowbtn" onclick="openExercise(${x.id})"><b>${x.name}</b><span>${x.muscle} • ${x.reps}</span></button>`).join('');
 }
 function exportHistory(){
-  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),version:'v9',history:history(),workouts:workoutHistory()},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),version:'v9',history:history(),workouts:reconcileWorkoutHistory()},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='treino-2cia-backup.json';a.click();URL.revokeObjectURL(a.href);
 }
 function importHistory(ev){
@@ -340,10 +424,11 @@ function importHistory(ev){
 }
 function clearData(){if(confirm('Apagar todo o histórico deste celular?')){localStorage.removeItem('t2_history');localStorage.removeItem('t2_workouts');localStorage.removeItem('t2_active_plan');localStorage.removeItem('t2_last');updateLast();alert('Histórico apagado.')}}
 function copyCurrentBase(){navigator.clipboard?.writeText(location.origin+location.pathname).then(()=>alert('Endereço copiado.')).catch(()=>alert(location.origin+location.pathname))}
+reconcileWorkoutHistory();
 updateLast();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
 const params=new URLSearchParams(location.search);const direct=Number(params.get('exercise'));if(direct)setTimeout(()=>openExercise(direct),50);
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v9.0');
+localStorage.setItem('t2_app_version','v10.0');
