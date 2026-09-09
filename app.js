@@ -17,19 +17,27 @@ function openGroup(g){
 }
 function openPlans(){
   const grid=byId('planGrid');
-  grid.innerHTML='';
-  Object.entries(DATA.plans).forEach(([name,list])=>{
-    const btn=document.createElement('button');
-    btn.className='rowbtn';
-    btn.innerHTML=`<b>${name}</b><span>${list.length} exercícios</span>`;
-    btn.addEventListener('click',()=>openPlan(name));
-    grid.appendChild(btn);
+  grid.innerHTML=Object.entries(DATA.plans).map(([name,list],idx)=>`
+    <button class="rowbtn plan-btn" data-plan-index="${idx}">
+      <b>${name}</b><span>${list.length} exercícios</span>
+    </button>`).join('');
+  const names=Object.keys(DATA.plans);
+  grid.querySelectorAll('.plan-btn').forEach(btn=>{
+    btn.onclick=()=>openPlan(names[Number(btn.dataset.planIndex)]);
   });
   showView('plans');
 }
 function openPlan(name){
-  currentListMode="plan";byId('listTitle').textContent=name;
-  renderExerciseButtons(DATA.plans[name].map(exByName).filter(Boolean));showView('list');
+  const plan = DATA.plans[name];
+  if(!plan){
+    alert('Não foi possível abrir este treino.');
+    return;
+  }
+  currentListMode='plan';
+  byId('listTitle').textContent=name;
+  const list=plan.map(exByName).filter(Boolean);
+  renderExerciseButtons(list);
+  showView('list');
 }
 function goListBack(){showView(currentListMode==="plan"?"plans":"groups")}
 function renderExerciseButtons(list){
@@ -91,3 +99,5 @@ if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serv
 const params=new URLSearchParams(location.search);const direct=Number(params.get('exercise'));if(direct)setTimeout(()=>openExercise(direct),50);
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
+
+localStorage.setItem('t2_app_version','v6.2');
