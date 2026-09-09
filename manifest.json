@@ -3,8 +3,8 @@
   "short_name": "Treino 2ª CIA",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#090909",
-  "theme_color": "#8b0000",
+  "background_color": "#070707",
+  "theme_color": "#b40000",
   "description": "Treinos, cargas, histórico e alongamentos da academia da 2ª CIA / 4º BBM — Currais Novos.",
   "icons": [
     {

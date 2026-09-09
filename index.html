@@ -10,33 +10,58 @@
 </head>
 <body>
 <div id="splash" class="splash">
-  <img src="assets/brasao-cbmrn.png" alt="Brasão Corpo de Bombeiros Militar do RN">
+  <img src="icon-512.png" alt="Brasão Corpo de Bombeiros Militar do RN">
   <div class="splash-title">2ª CIA / 4º BBM</div>
   <div class="splash-sub">CURRAIS NOVOS</div>
 </div>
-<header class="hero">
-  <img class="crest" src="assets/brasao-cbmrn.png" alt="Brasão Corpo de Bombeiros Militar do RN">
-  <div class="unit">2ª CIA / 4º BBM</div>
-  <h1>CURRAIS NOVOS</h1>
-  <p>Disciplina • Treino • Prontidão</p>
-</header>
+
 
 <main class="wrap">
   <section id="home" class="view active">
-    <div class="grid2">
-      <button class="big red" onclick="openPlans()">INICIAR TREINO</button>
-      <button class="big" onclick="openGroups()">EXERCÍCIOS</button>
+    <div class="home-hero">
+      <div class="home-watermark">BOMBEIROS</div>
+      <img class="home-crest" src="icon-512.png" alt="Brasão do Corpo de Bombeiros Militar do RN">
+      <div class="home-unit">2ª CIA / 4º BBM</div>
+      <h2>CURRAIS NOVOS</h2>
+      <p>DISCIPLINA • TREINO • PRONTIDÃO</p>
     </div>
-    <div class="card">
-      <div class="eyebrow">ÚLTIMO REGISTRO</div>
-      <div id="lastWorkout" class="last">Nenhum treino registrado.</div>
+
+    <div class="primary-actions">
+      <button class="action-card action-main" onclick="openPlans()">
+        <span class="action-icon">▶</span>
+        <span><b>INICIAR TREINO</b><small>Registre seu desempenho</small></span>
+      </button>
+      <button class="action-card" onclick="openGroups()">
+        <span class="action-icon">▥</span>
+        <span><b>EXERCÍCIOS</b><small>Biblioteca completa</small></span>
+      </button>
     </div>
-    <div class="grid2">
-      <button class="tile" onclick="showView('progress');renderProgress()">📈 Evolução</button>
-      <button class="tile" onclick="showView('history');renderHistory()">🗂 Histórico</button>
-      <button class="tile" onclick="showView('stretch');renderStretch()">🧘 Alongamento</button>
-      <button class="tile" onclick="showView('tools')">⚙️ Ferramentas</button>
+
+    <button class="last-card" onclick="showView('history');renderHistory()">
+      <div class="last-icon">▥</div>
+      <div>
+        <span class="eyebrow">ÚLTIMO REGISTRO</span>
+        <strong id="lastWorkout">Nenhum treino registrado.</strong>
+      </div>
+      <span class="chev">›</span>
+    </button>
+
+    <div class="feature-grid">
+      <button class="feature-card" onclick="showView('progress');renderProgress()">
+        <span class="feature-icon">↗</span><span><b>EVOLUÇÃO</b><small>Acompanhe seu progresso</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('history');renderHistory()">
+        <span class="feature-icon">▣</span><span><b>HISTÓRICO</b><small>Todos os seus treinos</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('stretch');renderStretch()">
+        <span class="feature-icon">⌁</span><span><b>ALONGAMENTO</b><small>Prepare seu corpo</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('tools')">
+        <span class="feature-icon">⚙</span><span><b>FERRAMENTAS</b><small>Backup, QR e extras</small></span><span class="chev">›</span>
+      </button>
     </div>
+
+    <div class="motto">“Disciplina hoje,<br>prontidão sempre.”</div>
   </section>
 
   <section id="groups" class="view">
@@ -121,7 +146,7 @@
     <div class="card">
       <h3>Identidade da unidade</h3>
       <div class="brand-card">
-        <img src="assets/brasao-cbmrn.png" alt="Brasão CBMRN">
+        <img src="icon-512.png" alt="Brasão CBMRN">
         <div><b>2ª CIA / 4º BBM</b><br><small>Currais Novos • Rio Grande do Norte</small></div>
       </div>
     </div>

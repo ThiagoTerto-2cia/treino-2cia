@@ -82,4 +82,4 @@ updateLast();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
 const params=new URLSearchParams(location.search);const direct=Number(params.get('exercise'));if(direct)setTimeout(()=>openExercise(direct),50);
 
-window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),900));
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
