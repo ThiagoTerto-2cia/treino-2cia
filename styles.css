@@ -397,3 +397,6 @@ nav button:first-child{color:#ff3038}
 @media(max-width:480px){
   .visual .imgbox img.realistic-exercise{height:190px}
 }
+
+/* V20 - padronização das fotos do Treino A */
+.visual .imgbox img.realistic-exercise{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center}

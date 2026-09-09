@@ -1,5 +1,5 @@
-const CACHE='t2cia-v19.0';
-const SHELL=['./','index.html','styles.css','data.js','app.js','app-v16.js','app-v17.js','app-v18.js','app-v19.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html','assets/exercises/1-inicio.webp','assets/exercises/1-fim.webp'];
+const CACHE='t2cia-v20.0';
+const SHELL=['./','index.html','styles.css','data.js','app.js','app-v16.js','app-v17.js','app-v18.js','app-v19.js','app-v20.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html','assets/exercises/1-inicio.webp','assets/exercises/1-fim.webp','assets/exercises/supino-inclinado-inicio.webp','assets/exercises/supino-inclinado-fim.webp','assets/exercises/crucifixo-halteres-inicio.webp','assets/exercises/crucifixo-halteres-fim.webp','assets/exercises/crossover-medio-inicio.webp','assets/exercises/crossover-medio-fim.webp','assets/exercises/triceps-corda-inicio.webp','assets/exercises/triceps-corda-fim.webp','assets/exercises/triceps-testa-inicio.webp','assets/exercises/triceps-testa-fim.webp','assets/exercises/triceps-frances-inicio.webp','assets/exercises/triceps-frances-fim.webp'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -26,6 +26,7 @@ self.addEventListener('fetch',event=>{
     url.pathname.endsWith('/app-v17.js') ||
     url.pathname.endsWith('/app-v18.js') ||
     url.pathname.endsWith('/app-v19.js') ||
+    url.pathname.endsWith('/app-v20.js') ||
     url.pathname.endsWith('/data.js') ||
     url.pathname.endsWith('/index.html') ||
     url.pathname.endsWith('/styles.css') ||
