@@ -379,3 +379,11 @@ nav button:first-child{color:#ff3038}
   .smart-volume{grid-template-columns:1fr auto 1fr}
   .smart-volume strong{grid-column:1/-1;text-align:center}
 }
+
+/* ===== V18 CONSISTÊNCIA ===== */
+.weekly-card{margin-top:18px}
+.weekly-card h2{margin-top:0}
+.weekly-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.weekly-grid>div{background:#101010;border:1px solid #303030;border-radius:12px;padding:14px 10px;text-align:center}
+.weekly-grid strong{display:block;color:#ff5d68;font-size:26px;line-height:1}
+.weekly-grid span{display:block;color:#aaa;font-size:12px;margin-top:7px}

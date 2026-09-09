@@ -1,5 +1,5 @@
-const CACHE='t2cia-v17.0';
-const SHELL=['./','index.html','styles.css','data.js','app.js','app-v16.js','app-v17.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html'];
+const CACHE='t2cia-v18.0';
+const SHELL=['./','index.html','styles.css','data.js','app.js','app-v16.js','app-v17.js','app-v18.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -24,6 +24,7 @@ self.addEventListener('fetch',event=>{
     url.pathname.endsWith('/app.js') ||
     url.pathname.endsWith('/app-v16.js') ||
     url.pathname.endsWith('/app-v17.js') ||
+    url.pathname.endsWith('/app-v18.js') ||
     url.pathname.endsWith('/data.js') ||
     url.pathname.endsWith('/index.html') ||
     url.pathname.endsWith('/styles.css') ||
