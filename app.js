@@ -139,6 +139,8 @@ function finishPlanWorkout(){
         <span>${x.maxWeight ? `${x.maxWeight} kg máx.` : 'peso corporal'}</span>
       </div>`).join('')
     : '<div class="hist">Nenhuma série registrada.</div>';
+  const fc=byId('finishComparison');
+  if(fc) fc.innerHTML=workoutComparisonHtml(record);
 
   activePlanIndex=-1;
   workoutStartedAt=null;
@@ -361,9 +363,18 @@ function completeSet(){
     date:new Date().toISOString(),group:currentExercise.group,exercise:currentExercise.name,
     set:currentSet,weight,reps,plan:activePlanIndex>=0?activePlanName:""
   });
+  const wasPR=!bodyweight && checkNewPR(currentExercise.name,weight);
   saveHistory(h);
   localStorage.setItem('t2_last',`${currentExercise.group} • ${currentExercise.name} • ${weight} kg • ${reps} reps`);
   updateLast();
+  if(wasPR && weight>0){
+    const toast=byId('prToast');
+    if(toast){
+      toast.innerHTML=`🏆 <b>NOVO RECORDE</b><span>${currentExercise.name}: ${weight} kg</span>`;
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),3200);
+    }
+  }
 
   if(currentSet<currentExercise.sets){
     currentSet++;
@@ -436,12 +447,63 @@ function openWorkoutHistory(index){
       ${w.legacyData?`<div class="quality-warning">⚠ Registro antigo/inconsistente. Não entra nos cálculos de evolução.${w.qualityReason?`<small>${w.qualityReason}</small>`:''}</div>`:''}
       ${!w.legacyData?`<button class="big stats-toggle" onclick="toggleWorkoutStats(${index})">${w.excludedFromStats?'INCLUIR NA EVOLUÇÃO':'IGNORAR NA EVOLUÇÃO'}</button>`:''}
     </div>
+    ${!w.legacyData&&!w.excludedFromStats?`<div class="card"><h3>Comparação com treino anterior</h3>${workoutComparisonHtml(w)}</div>`:''}
     <div class="card"><h3>Séries realizadas</h3>${rows||'<p>Sem séries detalhadas.</p>'}</div>`;
   scrollTo({top:0,behavior:'smooth'});
 }
 function closeWorkoutHistory(){
   byId('historyDetail').style.display='none';byId('historyList').style.display='block';scrollTo({top:0,behavior:'smooth'});
 }
+
+function personalRecords(){
+  const sets=reliableWorkouts().flatMap(w=>getWorkoutSets(w));
+  const prs={};
+  sets.forEach(x=>{
+    const ex=exByName(x.exercise);
+    if(Number(x.weight)>0 && !isBodyweightExercise(ex) && !isBodyweightName(x.exercise) && !isLegacyRangeValue(x.reps)){
+      const w=Number(x.weight);
+      if(!prs[x.exercise] || w>prs[x.exercise].weight){
+        prs[x.exercise]={exercise:x.exercise,weight:w,date:x.date};
+      }
+    }
+  });
+  return Object.values(prs).sort((a,b)=>b.weight-a.weight);
+}
+function previousWorkoutSamePlan(current){
+  const wh=reliableWorkouts().slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const same=wh.filter(x=>x.plan===current.plan);
+  const idx=same.findIndex(x=>x.date===current.date);
+  return idx>=0?same[idx+1]||null:null;
+}
+function workoutComparisonHtml(current){
+  const prev=previousWorkoutSamePlan(current);
+  if(!prev) return '<p class="muted">Ainda não há treino anterior válido deste mesmo plano para comparar.</p>';
+  const curVol=Number(current.volume||0), prevVol=Number(prev.volume||0);
+  const diff=curVol-prevVol;
+  const pct=prevVol>0?diff/prevVol*100:null;
+  const sign=diff>0?'+':'';
+  return `<div class="compare-box">
+    <div><span>Treino anterior</span><b>${Math.round(prevVol).toLocaleString('pt-BR')} kg</b></div>
+    <div><span>Treino atual</span><b>${Math.round(curVol).toLocaleString('pt-BR')} kg</b></div>
+    <div class="${diff>0?'compare-up':diff<0?'compare-down':'compare-flat'}">
+      <span>Diferença</span><b>${sign}${Math.round(diff).toLocaleString('pt-BR')} kg${pct===null?'':` • ${sign}${pct.toFixed(1)}%`}</b>
+    </div>
+  </div>`;
+}
+function checkNewPR(exercise, weight){
+  if(!(weight>0) || !exercise) return false;
+  const ex=exByName(exercise);
+  if(isBodyweightExercise(ex) || isBodyweightName(exercise)) return false;
+  const prior=history().filter(x=>
+    x.exercise===exercise &&
+    Number(x.weight)>0 &&
+    Number(x.weight)<Number(weight) &&
+    !isLegacyRangeValue(x.reps)
+  );
+  const previousBest=prior.length?Math.max(...prior.map(x=>Number(x.weight))):0;
+  return Number(weight)>previousBest;
+}
+
 function renderProgress(){
   const h=history(); reconcileWorkoutHistory(); const whAll=migrateWorkoutQuality(), wh=reliableWorkouts(), now=new Date();
   const reliableDates=new Set(wh.map(w=>w.date.slice(0,10)));
@@ -466,6 +528,9 @@ function renderProgress(){
   });
   const rows=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,15);
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
+  const prs=personalRecords();
+  const prBox=byId('personalRecords');
+  if(prBox) prBox.innerHTML=prs.length?prs.slice(0,12).map(p=>`<div class="pr-row"><span>🏆 ${p.exercise}</span><b>${p.weight} kg</b><small>${new Date(p.date).toLocaleDateString('pt-BR')}</small></div>`).join(''):'<p class="muted">Registre cargas para criar seus recordes pessoais.</p>';
 
   const recent=wh.slice(0,8).reverse();
   const maxVol=Math.max(1,...recent.map(x=>Number(x.volume||0)));
@@ -512,4 +577,4 @@ const params=new URLSearchParams(location.search);const direct=Number(params.get
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v12.0');
+localStorage.setItem('t2_app_version','v13.0');
