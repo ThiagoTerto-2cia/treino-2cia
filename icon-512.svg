@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="96" fill="#090909"/>
+<path d="M256 55c72 54 116 121 116 194 0 79-51 144-116 181-65-37-116-102-116-181 0-73 44-140 116-194z" fill="#b40000"/>
+<path d="M256 100c44 47 67 90 67 137 0 51-28 95-67 122-39-27-67-71-67-122 0-47 23-90 67-137z" fill="#ef2b2b"/>
+<text x="256" y="252" text-anchor="middle" fill="white" font-size="76" font-family="Arial" font-weight="900">2ª</text>
+<text x="256" y="316" text-anchor="middle" fill="white" font-size="44" font-family="Arial" font-weight="900">CIA</text>
+<text x="256" y="468" text-anchor="middle" fill="white" font-size="34" font-family="Arial" font-weight="800">4º BBM</text>
+</svg>
