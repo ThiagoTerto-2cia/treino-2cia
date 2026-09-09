@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="620" viewBox="0 0 440 620">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3f0505"/><stop offset="1" stop-color="#0d0d0d"/></linearGradient></defs>
+      <rect width="440" height="620" rx="28" fill="url(#g)"/>
+      <rect x="16" y="16" width="408" height="588" rx="22" fill="none" stroke="#b40000" stroke-width="4"/>
+      <text x="220" y="56" text-anchor="middle" fill="#ff5b5b" font-family="Arial" font-size="18" font-weight="700">FIM</text>
+      
+        <circle cx="220" cy="145" r="42" fill="#d9d9d9"/>
+        <line x1="220" y1="187" x2="220" y2="330" stroke="#d9d9d9" stroke-width="34" stroke-linecap="round"/>
+        <line x1="220" y1="225" x2="95" y2="205" stroke="#d9d9d9" stroke-width="28" stroke-linecap="round"/>
+        <line x1="220" y1="225" x2="345" y2="205" stroke="#d9d9d9" stroke-width="28" stroke-linecap="round"/>
+        <line x1="220" y1="325" x2="145" y2="415" stroke="#d9d9d9" stroke-width="30" stroke-linecap="round"/>
+        <line x1="220" y1="325" x2="295" y2="415" stroke="#d9d9d9" stroke-width="30" stroke-linecap="round"/>
+        
+      <circle cx="220" cy="280" r="52" fill="#d71920" opacity=".22"/>
+      <text x="220" y="500" text-anchor="middle" fill="white" font-family="Arial" font-size="22" font-weight="700">Puxada neutra</text>
+      <text x="220" y="532" text-anchor="middle" fill="#bdbdbd" font-family="Arial" font-size="16">Dorsal</text>
+      <text x="220" y="578" text-anchor="middle" fill="#888" font-family="Arial" font-size="13">ILUSTRAÇÃO PROVISÓRIA</text>
+    </svg>
