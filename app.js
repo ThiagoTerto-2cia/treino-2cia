@@ -112,7 +112,9 @@ function finishPlanWorkout(){
     sets:metrics.sets,
     reps:metrics.reps,
     volume:metrics.volume,
-    byExercise:metrics.byExercise
+    byExercise:metrics.byExercise,
+    schemaVersion:12,
+    excludedFromStats:false
   };
   wh.unshift(record);
   saveWorkoutHistory(wh);
@@ -133,7 +135,7 @@ function finishPlanWorkout(){
   byId('finishExerciseSummary').innerHTML=metrics.byExercise.length
     ? metrics.byExercise.map(x=>`
       <div class="finish-ex-row">
-        <div><b>${x.name}</b><small>${x.sets} séries • ${x.reps} reps</small></div>
+        <div><b>${x.name}</b><small>${x.sets} séries • ${isLegacyRangeValue(x.reps)?x.reps+' reps (registro antigo)':x.reps+' reps'}</small></div>
         <span>${x.maxWeight ? `${x.maxWeight} kg máx.` : 'peso corporal'}</span>
       </div>`).join('')
     : '<div class="hist">Nenhuma série registrada.</div>';
@@ -162,10 +164,69 @@ function numericRepValue(value){
   const m=s.match(/\d+(?:\.\d+)?/);
   return m?Number(m[0]):0;
 }
+
+
+function normText(value){
+  return String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+}
+function isBodyweightName(name){
+  const n=normText(name);
+  return [
+    'barra fixa','pull up','pull-up','chin up','chin-up',
+    'prancha','dead bug','crunch','abdominal','flexao','flexão'
+  ].some(k=>n.includes(normText(k)));
+}
+function workoutQuality(w){
+  const sets=getWorkoutSets(w);
+  const reasons=[];
+  if(sets.some(x=>isLegacyRangeValue(x.reps))) reasons.push('repetições antigas em faixa');
+  const seen=new Set();
+  let duplicate=false;
+  sets.forEach(x=>{
+    const key=`${normText(x.exercise)}|${x.set}`;
+    if(seen.has(key)) duplicate=true;
+    seen.add(key);
+  });
+  if(duplicate) reasons.push('séries duplicadas');
+  if(sets.some(x=>isBodyweightName(x.exercise) && Number(x.weight||0)>0)) reasons.push('carga corporal registrada como carga externa');
+  return {legacy:reasons.length>0,reasons};
+}
+function migrateWorkoutQuality(){
+  const wh=workoutHistory();
+  let changed=false;
+  wh.forEach(w=>{
+    const q=workoutQuality(w);
+    if(q.legacy && !w.legacyData){w.legacyData=true;changed=true}
+    const rs=q.reasons.join(' • ');
+    if(rs && w.qualityReason!==rs){w.qualityReason=rs;changed=true}
+    if(w.excludedFromStats==null){w.excludedFromStats=false;changed=true}
+  });
+  if(changed) saveWorkoutHistory(wh);
+  return wh;
+}
+function reliableWorkouts(){
+  return migrateWorkoutQuality().filter(w=>!w.legacyData && !w.excludedFromStats);
+}
+function toggleWorkoutStats(index){
+  const wh=migrateWorkoutQuality(), w=wh[index]; if(!w)return;
+  w.excludedFromStats=!w.excludedFromStats;
+  saveWorkoutHistory(wh);
+  openWorkoutHistory(index);
+}
+
+function isLegacyRangeValue(value){
+  const s=String(value??'').trim();
+  return /^\d+\s*[–—-]\s*\d+/.test(s);
+}
+function hasUsableSetForVolume(x){
+  return Number(x.weight||0)>0 && !isLegacyRangeValue(x.reps) && numericRepValue(x.reps)>0;
+}
+
 function setVolume(x){
+  if(!hasUsableSetForVolume(x)) return 0;
   const w=Number(x.weight||0);
   const r=numericRepValue(x.reps);
-  return w>0 && r>0 ? w*r : 0;
+  return w*r;
 }
 function getWorkoutSets(w){
   const all=history();
@@ -186,8 +247,10 @@ function getWorkoutSets(w){
 function deriveWorkoutMetrics(w){
   const sets=getWorkoutSets(w);
   const by={};
-  let volume=0,reps=0;
+  let volume=0,reps=0,legacy=false,usableWeightedSets=0;
   sets.forEach(x=>{
+    if(isLegacyRangeValue(x.reps)) legacy=true;
+    if(hasUsableSetForVolume(x)) usableWeightedSets++;
     volume+=setVolume(x);
     reps+=numericRepValue(x.reps);
     if(!by[x.exercise]) by[x.exercise]={name:x.exercise,sets:0,reps:0,volume:0,maxWeight:0};
@@ -200,6 +263,8 @@ function deriveWorkoutMetrics(w){
     sets:sets.length,
     reps,
     volume:Math.round(volume*10)/10,
+    legacy,
+    usableWeightedSets,
     exercisesDone:Object.keys(by).length,
     byExercise:Object.values(by)
   };
@@ -213,6 +278,7 @@ function reconcileWorkoutHistory(){
     if((!Number(w.exercisesDone)||Number(w.exercisesDone)===0) && d.exercisesDone){w.exercisesDone=d.exercisesDone;changed=true}
     // Recompute volume whenever we can derive a better value from the raw set history.
     if(d.volume>0 && Number(w.volume||0)!==d.volume){w.volume=d.volume;changed=true}
+    if(d.legacy && !w.legacyData){w.legacyData=true;changed=true}
     if(d.byExercise.length && (!Array.isArray(w.byExercise)||!w.byExercise.length)){w.byExercise=d.byExercise;changed=true}
     if(d.reps>0 && !Number(w.reps)){w.reps=d.reps;changed=true}
   });
@@ -227,8 +293,8 @@ function isTimedExercise(ex){
 }
 function isBodyweightExercise(ex){
   if(!ex) return false;
-  const t=(ex.name+' '+ex.group+' '+ex.muscle).toLowerCase();
-  return isTimedExercise(ex) || /dead bug|abdominal|crunch|prancha|alongamento|mobilidade/.test(t);
+  const t=normText(ex.name+' '+ex.group+' '+ex.muscle);
+  return isTimedExercise(ex) || isBodyweightName(ex.name) || /dead bug|abdominal|crunch|prancha|alongamento|mobilidade/.test(t);
 }
 function formatSetRecord(x){
   const ex=exByName(x.exercise);
@@ -325,7 +391,7 @@ function pauseTimer(){clearInterval(tick);tick=null}
 function resetTimer(){pauseTimer();timer=currentExercise?currentExercise.rest:90;updateClock()}
 function updateLast(){byId('lastWorkout').textContent=localStorage.getItem('t2_last')||"Nenhum treino registrado."}
 function renderHistory(){
-  const h=history(), wh=reconcileWorkoutHistory();
+  const h=history(); reconcileWorkoutHistory(); const wh=migrateWorkoutQuality();
   const detail=byId('historyDetail'); if(detail) detail.style.display='none';
   const list=byId('historyList'); if(list) list.style.display='block';
   let out='';
@@ -334,14 +400,14 @@ function renderHistory(){
       <button class="workout-hist workout-open" onclick="openWorkoutHistory(${i})">
         <b>${x.plan}</b>
         <span>${x.exercisesDone??x.exercises??0} exercícios • ${x.sets??0} séries • ${x.duration} min</span>
-        <span>${Number(x.volume||0).toLocaleString('pt-BR')} kg de volume</span>
+        <span>${x.legacyData?'Registro antigo — fora da evolução':(x.excludedFromStats?'Ignorado na evolução':Number(x.volume||0).toLocaleString('pt-BR')+' kg de volume')}</span>
         <small>${new Date(x.date).toLocaleString('pt-BR')}</small>
       </button>`).join('')}</div>`;
   } else out='<div class="card">Nenhum treino concluído ainda.</div>';
   byId('historyList').innerHTML=out;
 }
 function openWorkoutHistory(index){
-  const wh=reconcileWorkoutHistory(), w=wh[index]; if(!w)return;
+  reconcileWorkoutHistory(); const wh=migrateWorkoutQuality(), w=wh[index]; if(!w)return;
   const all=history();
   const start=w.startedAt?new Date(w.startedAt).getTime():0, end=new Date(w.date).getTime();
   let sets=all.filter(x=>{
@@ -367,6 +433,8 @@ function openWorkoutHistory(index){
         <div><strong>${Number(w.volume||0).toLocaleString('pt-BR')}</strong><span>kg volume</span></div>
       </div>
       <small>${new Date(w.date).toLocaleString('pt-BR')}</small>
+      ${w.legacyData?`<div class="quality-warning">⚠ Registro antigo/inconsistente. Não entra nos cálculos de evolução.${w.qualityReason?`<small>${w.qualityReason}</small>`:''}</div>`:''}
+      ${!w.legacyData?`<button class="big stats-toggle" onclick="toggleWorkoutStats(${index})">${w.excludedFromStats?'INCLUIR NA EVOLUÇÃO':'IGNORAR NA EVOLUÇÃO'}</button>`:''}
     </div>
     <div class="card"><h3>Séries realizadas</h3>${rows||'<p>Sem séries detalhadas.</p>'}</div>`;
   scrollTo({top:0,behavior:'smooth'});
@@ -375,19 +443,26 @@ function closeWorkoutHistory(){
   byId('historyDetail').style.display='none';byId('historyList').style.display='block';scrollTo({top:0,behavior:'smooth'});
 }
 function renderProgress(){
-  const h=history(), wh=reconcileWorkoutHistory(), now=new Date();
-  const days=new Set(h.map(x=>x.date.slice(0,10)));
+  const h=history(); reconcileWorkoutHistory(); const whAll=migrateWorkoutQuality(), wh=reliableWorkouts(), now=new Date();
+  const reliableDates=new Set(wh.map(w=>w.date.slice(0,10)));
+  const days=new Set([...reliableDates]);
   const totalVolume=wh.reduce((sum,x)=>sum+Number(x.volume||0),0);
-  byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos</small></div><div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div><div class="stat"><strong>${Math.round(totalVolume).toLocaleString('pt-BR')}</strong><small>kg de volume</small></div>`;
+  const reliableSeries=wh.reduce((sum,w)=>sum+Number(w.sets||0),0);
+  byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos válidos</small></div><div class="stat"><strong>${reliableSeries}</strong><small>séries válidas</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div><div class="stat"><strong>${Math.round(totalVolume).toLocaleString('pt-BR')}</strong><small>kg de volume</small></div>`;
 
   const weekAgo=Date.now()-7*86400000, monthAgo=Date.now()-30*86400000;
   const week=wh.filter(x=>new Date(x.date).getTime()>=weekAgo).length;
   const month=wh.filter(x=>new Date(x.date).getTime()>=monthAgo).length;
   byId('periodStats').innerHTML=`<div class="period-row"><span>Últimos 7 dias</span><b>${week} treino${week===1?'':'s'}</b></div><div class="period-row"><span>Últimos 30 dias</span><b>${month} treino${month===1?'':'s'}</b></div>`;
+  const ignored=whAll.filter(x=>x.legacyData||x.excludedFromStats).length;
+  const dq=byId('dataQuality'); if(dq) dq.innerHTML=ignored?`<div class="quality-note">ℹ ${ignored} treino${ignored===1?'':'s'} antigo${ignored===1?'':'s'} ou ignorado${ignored===1?'':'s'} não entra${ignored===1?'':'m'} na evolução.</div>`:'<div class="quality-ok">✓ Todos os treinos contabilizados são válidos.</div>';
 
-  const best={};h.forEach(x=>{
+  const reliableSets=wh.flatMap(w=>getWorkoutSets(w));
+  const best={};reliableSets.forEach(x=>{
     const ex=exByName(x.exercise);
-    if(Number(x.weight)>0 && !isBodyweightExercise(ex)) best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight));
+    if(Number(x.weight)>0 && !isBodyweightExercise(ex) && !isBodyweightName(x.exercise) && !isLegacyRangeValue(x.reps)){
+      best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight));
+    }
   });
   const rows=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,15);
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
@@ -399,13 +474,18 @@ function renderProgress(){
     return `<div class="chart-row"><span>${String(x.plan).split('—')[0].trim()}</span><div class="bar-track"><i style="width:${pct}%"></i></div><b>${Math.round(Number(x.volume||0)).toLocaleString('pt-BR')} kg</b></div>`;
   }).join(''):'<p class="muted">Conclua treinos para gerar o gráfico.</p>';
 
-  const names=[...new Set(h.filter(x=>Number(x.weight)>0 && !isBodyweightExercise(exByName(x.exercise))).map(x=>x.exercise))].sort();
+  const names=[...new Set(reliableSets.filter(x=>
+    Number(x.weight)>0 &&
+    !isBodyweightExercise(exByName(x.exercise)) &&
+    !isBodyweightName(x.exercise) &&
+    !isLegacyRangeValue(x.reps)
+  ).map(x=>x.exercise))].sort();
   const sel=byId('progressExercise');
   sel.innerHTML=names.length?names.map(n=>`<option value="${n.replaceAll('"','&quot;')}">${n}</option>`).join(''):'<option>Sem dados</option>';
   if(names.length) renderExerciseProgress(names[0]); else byId('exerciseProgressChart').innerHTML='<p class="muted">Registre cargas para acompanhar a evolução.</p>';
 }
 function renderExerciseProgress(name){
-  const pts=history().filter(x=>x.exercise===name&&Number(x.weight)>0).slice().reverse();
+  const pts=reliableWorkouts().flatMap(w=>getWorkoutSets(w)).filter(x=>x.exercise===name&&Number(x.weight)>0&&!isLegacyRangeValue(x.reps)).slice().reverse();
   const daily={}; pts.forEach(x=>{const d=x.date.slice(0,10);daily[d]=Math.max(daily[d]||0,Number(x.weight))});
   const entries=Object.entries(daily).slice(-10), max=Math.max(1,...entries.map(x=>x[1]));
   byId('exerciseProgressChart').innerHTML=entries.length?entries.map(([d,w])=>`
@@ -416,7 +496,7 @@ function renderStretch(){
   byId('stretchList').innerHTML=list.map(x=>`<button class="rowbtn" onclick="openExercise(${x.id})"><b>${x.name}</b><span>${x.muscle} • ${x.reps}</span></button>`).join('');
 }
 function exportHistory(){
-  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),version:'v9',history:history(),workouts:reconcileWorkoutHistory()},null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),version:'v12',history:history(),workouts:migrateWorkoutQuality()},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='treino-2cia-backup.json';a.click();URL.revokeObjectURL(a.href);
 }
 function importHistory(ev){
@@ -425,10 +505,11 @@ function importHistory(ev){
 function clearData(){if(confirm('Apagar todo o histórico deste celular?')){localStorage.removeItem('t2_history');localStorage.removeItem('t2_workouts');localStorage.removeItem('t2_active_plan');localStorage.removeItem('t2_last');updateLast();alert('Histórico apagado.')}}
 function copyCurrentBase(){navigator.clipboard?.writeText(location.origin+location.pathname).then(()=>alert('Endereço copiado.')).catch(()=>alert(location.origin+location.pathname))}
 reconcileWorkoutHistory();
+migrateWorkoutQuality();
 updateLast();
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
 const params=new URLSearchParams(location.search);const direct=Number(params.get('exercise'));if(direct)setTimeout(()=>openExercise(direct),50);
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v10.0');
+localStorage.setItem('t2_app_version','v12.0');

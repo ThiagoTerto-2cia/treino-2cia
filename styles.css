@@ -197,3 +197,17 @@ nav button:first-child{color:#ff3038}
 .bar-track i{display:block;height:100%;background:linear-gradient(90deg,#e0000b,#ff4b52);border-radius:999px;min-width:4px}
 #progressExercise{width:100%;padding:13px;border-radius:12px;border:1px solid #444;background:#111;color:#fff;margin-bottom:16px;font-size:1rem}
 #weightField[style*="none"] + #repsField{grid-column:1/-1}
+
+
+/* ===== V12 QUALIDADE DOS DADOS ===== */
+.quality-note,.quality-ok{
+  margin:12px 0;padding:13px 14px;border-radius:13px;font-size:.9rem;line-height:1.35
+}
+.quality-note{background:#231a08;border:1px solid #6f5618;color:#f0d584}
+.quality-ok{background:#0d2013;border:1px solid #285c36;color:#9ce6ad}
+.quality-warning{
+  margin-top:14px;padding:12px;border-radius:12px;background:#281b08;border:1px solid #735b1a;color:#f0d584;
+  text-align:left;line-height:1.35
+}
+.quality-warning small{display:block;margin-top:6px;color:#c9b979}
+.stats-toggle{width:100%;margin-top:12px;background:#171717;border-color:#555}
