@@ -387,3 +387,13 @@ nav button:first-child{color:#ff3038}
 .weekly-grid>div{background:#101010;border:1px solid #303030;border-radius:12px;padding:14px 10px;text-align:center}
 .weekly-grid strong{display:block;color:#ff5d68;font-size:26px;line-height:1}
 .weekly-grid span{display:block;color:#aaa;font-size:12px;margin-top:7px}
+
+/* ===== V19 IMAGENS REALISTAS ===== */
+.visual .imgbox img.realistic-exercise{
+  object-fit:cover;
+  object-position:center;
+  background:#080808;
+}
+@media(max-width:480px){
+  .visual .imgbox img.realistic-exercise{height:190px}
+}
