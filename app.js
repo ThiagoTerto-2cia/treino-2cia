@@ -64,20 +64,82 @@ function openPlanExercise(index){
 }
 function workoutHistory(){return JSON.parse(localStorage.getItem('t2_workouts')||'[]')}
 function saveWorkoutHistory(h){localStorage.setItem('t2_workouts',JSON.stringify(h))}
+
+function getActiveWorkoutMetrics(){
+  const h=history();
+  if(!workoutStartedAt) return {sets:0,reps:0,volume:0,exerciseCount:0,byExercise:[]};
+  const startedMs=new Date(workoutStartedAt).getTime();
+  const relevant=h.filter(x=>{
+    const t=new Date(x.date).getTime();
+    return t>=startedMs && x.plan===activePlanName;
+  });
+  const by={};
+  let totalReps=0,totalVolume=0;
+  relevant.forEach(x=>{
+    const repsNum=Number(x.reps)||0;
+    const weightNum=Number(x.weight)||0;
+    totalReps+=repsNum;
+    totalVolume+=weightNum*repsNum;
+    if(!by[x.exercise]) by[x.exercise]={name:x.exercise,sets:0,reps:0,volume:0,maxWeight:0};
+    by[x.exercise].sets++;
+    by[x.exercise].reps+=repsNum;
+    by[x.exercise].volume+=weightNum*repsNum;
+    by[x.exercise].maxWeight=Math.max(by[x.exercise].maxWeight,weightNum);
+  });
+  return {
+    sets:relevant.length,
+    reps:totalReps,
+    volume:Math.round(totalVolume*10)/10,
+    exerciseCount:Object.keys(by).length,
+    byExercise:Object.values(by)
+  };
+}
+
 function finishPlanWorkout(){
   const ended=new Date();
   const started=workoutStartedAt?new Date(workoutStartedAt):ended;
   const minutes=Math.max(1,Math.round((ended-started)/60000));
+  const metrics=getActiveWorkoutMetrics();
+
   const wh=workoutHistory();
-  wh.unshift({date:ended.toISOString(),plan:activePlanName,duration:minutes,exercises:activePlanExercises.length});
+  const record={
+    date:ended.toISOString(),
+    startedAt:workoutStartedAt,
+    plan:activePlanName,
+    duration:minutes,
+    exercisesPlanned:activePlanExercises.length,
+    exercisesDone:metrics.exerciseCount,
+    sets:metrics.sets,
+    reps:metrics.reps,
+    volume:metrics.volume,
+    byExercise:metrics.byExercise
+  };
+  wh.unshift(record);
   saveWorkoutHistory(wh);
-  localStorage.setItem('t2_last',`${activePlanName} • concluído • ${minutes} min`);
+
+  localStorage.setItem('t2_last',`${activePlanName} • ${metrics.sets} séries • ${minutes} min`);
   localStorage.removeItem('t2_active_plan');
   pauseTimer();
   updateLast();
+
   byId('finishPlanName').textContent=activePlanName;
-  byId('finishPlanStats').textContent=`${activePlanExercises.length} exercícios • ${minutes} min`;
-  activePlanIndex=-1; workoutStartedAt=null;
+  byId('finishPlanStats').innerHTML=`
+    <div class="finish-stats">
+      <div><strong>${metrics.exerciseCount}</strong><span>exercícios</span></div>
+      <div><strong>${metrics.sets}</strong><span>séries</span></div>
+      <div><strong>${minutes}</strong><span>min</span></div>
+      <div><strong>${metrics.volume.toLocaleString('pt-BR')}</strong><span>kg de volume</span></div>
+    </div>`;
+  byId('finishExerciseSummary').innerHTML=metrics.byExercise.length
+    ? metrics.byExercise.map(x=>`
+      <div class="finish-ex-row">
+        <div><b>${x.name}</b><small>${x.sets} séries • ${x.reps} reps</small></div>
+        <span>${x.maxWeight ? `${x.maxWeight} kg máx.` : 'peso corporal'}</span>
+      </div>`).join('')
+    : '<div class="hist">Nenhuma série registrada.</div>';
+
+  activePlanIndex=-1;
+  workoutStartedAt=null;
   showView('workoutDone');
 }
 function nextPlanExercise(){
@@ -134,6 +196,7 @@ function completeSet(){
   }else{
     pauseTimer();
     const btn=byId('nextExerciseBtn');
+    byId('setLabel').innerHTML=`<span class="done-inline">✓ Exercício concluído</span><small>${currentExercise.sets}/${currentExercise.sets} séries realizadas</small>`;
     if(activePlanIndex>=0 && btn){
       btn.style.display='block';
       btn.textContent=activePlanIndex<activePlanExercises.length-1
@@ -153,14 +216,15 @@ function updateLast(){byId('lastWorkout').textContent=localStorage.getItem('t2_l
 function renderHistory(){
   const h=history(), wh=workoutHistory();
   let out='';
-  if(wh.length) out+=`<div class="card"><h3>Treinos concluídos</h3>${wh.slice(0,20).map(x=>`<div class="workout-hist"><b>${x.plan}</b><span>${x.exercises} exercícios • ${x.duration} min</span><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join('')}</div>`;
+  if(wh.length) out+=`<div class="card"><h3>Treinos concluídos</h3>${wh.slice(0,20).map(x=>`<div class="workout-hist"><b>${x.plan}</b><span>${x.exercisesDone??x.exercises??0} exercícios • ${x.sets??0} séries • ${x.duration} min</span><span>${Number(x.volume||0).toLocaleString('pt-BR')} kg de volume</span><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join('')}</div>`;
   out+=h.length?h.slice(0,100).map(x=>`<div class="hist"><b>${x.exercise}</b><br>${x.group} • Série ${x.set} • ${x.weight} kg • ${x.reps} reps${x.plan?`<br><small>${x.plan}</small>`:''}<br><small>${new Date(x.date).toLocaleString('pt-BR')}</small></div>`).join(''):'<div class="card">Nenhum registro ainda.</div>';
   byId('historyList').innerHTML=out;
 }
 function renderProgress(){
   const h=history(), wh=workoutHistory(), days=new Set(h.map(x=>x.date.slice(0,10))), month=new Date().toISOString().slice(0,7);
   const monthDays=new Set(h.filter(x=>x.date.startsWith(month)).map(x=>x.date.slice(0,10)));
-  byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos</small></div><div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div>`;
+  const totalVolume=wh.reduce((sum,x)=>sum+Number(x.volume||0),0);
+  byId('progressSummary').innerHTML=`<div class="stat"><strong>${wh.length}</strong><small>treinos</small></div><div class="stat"><strong>${h.length}</strong><small>séries</small></div><div class="stat"><strong>${days.size}</strong><small>dias treinados</small></div><div class="stat"><strong>${Math.round(totalVolume).toLocaleString('pt-BR')}</strong><small>kg de volume</small></div>`;
   const best={};h.forEach(x=>{if(Number(x.weight)>0)best[x.exercise]=Math.max(best[x.exercise]||0,Number(x.weight))});
   const rows=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,15);
   byId('bestLoads').innerHTML=rows.length?rows.map(([n,w])=>`<div class="best"><span>${n}</span><b>${w} kg</b></div>`).join(''):'Sem cargas registradas ainda.';
@@ -184,4 +248,4 @@ const params=new URLSearchParams(location.search);const direct=Number(params.get
 
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),700));
 
-localStorage.setItem('t2_app_version','v7.0');
+localStorage.setItem('t2_app_version','v8.0');

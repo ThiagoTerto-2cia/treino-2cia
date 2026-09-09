@@ -152,3 +152,29 @@ nav button:first-child{color:#ff3038}
 .done-card button{width:100%;margin-top:10px}
 .workout-hist{display:grid;gap:3px;padding:11px 0;border-bottom:1px solid #303030}
 .workout-hist:last-child{border-bottom:0}.workout-hist b{color:#ff5c5c}.workout-hist span,.workout-hist small{color:#aaa}
+
+
+/* ===== V8 RESUMO DE TREINO ===== */
+.done-inline{display:block;color:#7df08c;font-size:18px;font-weight:900}
+#setLabel small{display:block;color:#aaa;font-size:12px;margin-top:5px;font-weight:600}
+.finish-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0
+}
+.finish-stats>div{
+  background:#101010;border:1px solid #343434;border-radius:14px;padding:14px 8px
+}
+.finish-stats strong{display:block;color:#ff5d65;font-size:22px}
+.finish-stats span{display:block;color:#aaa;font-size:11px;margin-top:4px}
+.finish-exercises{
+  margin:12px 0 20px;text-align:left;background:#0e0e0e;border:1px solid #303030;border-radius:14px;padding:0 12px
+}
+.finish-ex-row{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  padding:11px 2px;border-bottom:1px solid #2c2c2c
+}
+.finish-ex-row:last-child{border-bottom:0}
+.finish-ex-row b{display:block;font-size:14px}
+.finish-ex-row small{display:block;color:#999;margin-top:3px}
+.finish-ex-row>span{color:#ff7c82;font-size:12px;font-weight:800;text-align:right}
+#progressSummary.stats{grid-template-columns:repeat(2,1fr)}
+@media(min-width:600px){#progressSummary.stats{grid-template-columns:repeat(4,1fr)}}
