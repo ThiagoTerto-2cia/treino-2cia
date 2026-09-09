@@ -594,3 +594,19 @@ nav button:first-child{color:#ff3038}
   .motion-btn{font-size:13px}
   .exercise-motion-card img{max-height:62vh}
 }
+
+/* ===== V26 — FONTE HD NATIVA ===== */
+.visual .imgbox img.realistic-exercise.hd-portrait{
+  object-fit:cover;
+  object-position:center 42%;
+}
+@media(max-width:480px){
+  .visual .imgbox img.realistic-exercise.hd-portrait{
+    height:170px;
+    object-fit:cover;
+    object-position:center 40%;
+  }
+}
+.exercise-motion-card img{
+  image-rendering:auto;
+}
