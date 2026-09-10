@@ -628,3 +628,14 @@ nav button:first-child{color:#ff3038}
     object-position:center;
   }
 }
+
+/* V29 — corrige imagens minúsculas da V28 */
+@media(max-width:480px){
+  .visual .imgbox img.realistic-exercise.hd-portrait{
+    width:100%;
+    height:205px;
+    object-fit:cover;
+    object-position:center;
+    background:#080808;
+  }
+}
