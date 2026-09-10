@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8b0000">
+<title>Treino 2ª CIA</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body><div id="prToast" class="pr-toast"></div>
+<div id="splash" class="splash">
+  <img src="icon-512.png" alt="Brasão Corpo de Bombeiros Militar do RN">
+  <div class="splash-title">2ª CIA / 4º BBM</div>
+  <div class="splash-sub">CURRAIS NOVOS</div>
+</div>
+
+
+<main class="wrap">
+  <section id="home" class="view active">
+    <div class="home-hero">
+      <div class="home-watermark">BOMBEIROS</div>
+      <img class="home-crest" src="icon-512.png" alt="Brasão do Corpo de Bombeiros Militar do RN">
+      <div class="home-unit">2ª CIA / 4º BBM</div>
+      <h2>CURRAIS NOVOS</h2>
+      <p>DISCIPLINA • TREINO • PRONTIDÃO</p>
+    </div>
+
+    <div class="primary-actions">
+      <button class="action-card action-main" onclick="openPlans()">
+        <span class="action-icon">▶</span>
+        <span><b>INICIAR TREINO</b><small>Registre seu desempenho</small></span>
+      </button>
+      <button class="action-card" onclick="openGroups()">
+        <span class="action-icon">▥</span>
+        <span><b>EXERCÍCIOS</b><small>Biblioteca completa</small></span>
+      </button>
+    </div>
+
+    <button class="last-card" onclick="showView('history');renderHistory()">
+      <div class="last-icon">▥</div>
+      <div>
+        <span class="eyebrow">ÚLTIMO REGISTRO</span>
+        <strong id="lastWorkout">Nenhum treino registrado.</strong>
+      </div>
+      <span class="chev">›</span>
+    </button>
+
+    <div class="feature-grid">
+      <button class="feature-card" onclick="showView('progress');renderProgress()">
+        <span class="feature-icon">↗</span><span><b>EVOLUÇÃO</b><small>Acompanhe seu progresso</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('history');renderHistory()">
+        <span class="feature-icon">▣</span><span><b>HISTÓRICO</b><small>Todos os seus treinos</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('stretch');renderStretch()">
+        <span class="feature-icon">⌁</span><span><b>ALONGAMENTO</b><small>Prepare seu corpo</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card" onclick="showView('tools')">
+        <span class="feature-icon">⚙</span><span><b>FERRAMENTAS</b><small>Backup, QR e extras</small></span><span class="chev">›</span>
+      </button>
+    </div>
+
+    <div class="motto">“Disciplina hoje,<br>prontidão sempre.”</div>
+  </section>
+
+  <section id="groups" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Grupos musculares</h2></div>
+    <div id="groupGrid" class="stack"></div>
+  </section>
+
+  <section id="plans" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Treinos prontos</h2></div>
+    <div id="planGrid" class="stack"></div>
+  </section>
+
+  <section id="list" class="view">
+    <div class="bar"><button onclick="goListBack()">←</button><h2 id="listTitle"></h2></div>
+    <div id="planStartBox" class="plan-start-box"></div><div id="exerciseList" class="stack"></div>
+  </section>
+
+  <section id="exercise" class="view">
+    <div id="workoutProgress" class="workout-progress" style="display:none">
+      <span id="workoutPlanLabel"></span><b id="workoutStepLabel"></b>
+    </div>
+    <div class="bar"><button onclick="showView('list')">←</button><h2 id="exTitle"></h2></div>
+    <div class="visual">
+      <div class="imgbox"><span>1</span><img id="imgStart" alt="Posição inicial"><b>POSIÇÃO INICIAL</b></div>
+      <div class="imgbox"><span>2</span><img id="imgEnd" alt="Posição final"><b>POSIÇÃO FINAL</b></div>
+    </div>
+    <div class="card">
+      <div class="meta"><b id="exMuscle"></b><b id="exPrescription"></b></div>
+      <p id="exTip"></p>
+      <p class="avoid"><b>Evite:</b> <span id="exAvoid"></span></p>
+    </div>
+    <div class="card">
+      <h3 id="setLabel">Série 1</h3>
+      <div class="grid2">
+        <label id="weightField">Carga (kg)<input id="weight" type="number" min="0" step=".5"></label>
+        <label id="repsField"><span id="repsLabel">Repetições</span><input id="reps" type="number" min="1"></label>
+      </div>
+      <button class="big red" onclick="completeSet()">CONCLUIR SÉRIE</button>
+       <button id="nextExerciseBtn" class="big next-ex" style="display:none" onclick="nextPlanExercise()">PRÓXIMO EXERCÍCIO</button>
+    </div>
+    <div class="card timer">
+      <div class="eyebrow">DESCANSO</div>
+      <div id="clock">01:30</div>
+      <div class="grid3">
+        <button onclick="startTimer()">Iniciar</button>
+        <button onclick="pauseTimer()">Pausar</button>
+        <button onclick="resetTimer()">Reiniciar</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="workoutDone" class="view">
+    <div class="done-card">
+      <div class="done-check">✓</div>
+      <div class="eyebrow">TREINO CONCLUÍDO</div>
+      <h2 id="finishPlanName">Treino concluído</h2>
+      <div id="finishPlanStats"></div>
+      <div id="finishComparison" class="finish-comparison"></div>
+      <div id="finishExerciseSummary" class="finish-exercises"></div>
+      <button class="big red" onclick="showView('home')">VOLTAR AO INÍCIO</button>
+      <button class="big" onclick="showView('history');renderHistory()">VER HISTÓRICO</button>
+    </div>
+  </section>
+
+  <section id="history" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Histórico</h2></div>
+    <div id="historyList"></div>
+    <div id="historyDetail" style="display:none"></div>
+  </section>
+
+  <section id="progress" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Evolução</h2></div>
+    <div id="progressSummary" class="stats"></div>
+    <div id="dataQuality"></div>
+    <div class="card"><h3>Treinos por período</h3><div id="periodStats"></div></div>
+    <div class="card"><h3>Volume dos últimos treinos</h3><div id="volumeChart" class="mini-chart"></div></div>
+    <div class="card"><h3>Melhores cargas</h3><div id="bestLoads"></div></div>
+    <div class="card premium-pr"><h3>Recordes pessoais</h3><p class="muted">Somente recordes feitos dentro de treinos válidos entram aqui.</p><div id="personalRecords"></div></div>
+    <div class="card"><h3>Registros avulsos</h3><p class="muted">Séries feitas fora de um treino ficam separadas e não alteram os recordes oficiais.</p><div id="standaloneRecords"></div></div>
+    <div class="card"><h3>Evolução por exercício</h3>
+      <select id="progressExercise" onchange="renderExerciseProgress(this.value)"></select>
+      <div id="exerciseProgressChart" class="mini-chart"></div>
+    </div>
+  </section>
+
+  <section id="stretch" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Alongamento</h2></div>
+    <div id="stretchList" class="stack"></div>
+  </section>
+
+  <section id="tools" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Ferramentas</h2></div>
+    <div class="card">
+      <h3>Backup do histórico</h3>
+      <p>Exporte seus registros para não perder as cargas ao trocar de celular.</p>
+      <div class="grid2">
+        <button onclick="exportHistory()">Exportar</button>
+        <label class="filebtn">Importar<input id="importFile" type="file" accept="application/json" onchange="importHistory(event)"></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>QR Code por exercício</h3>
+      <p>Os QR Codes definitivos já estão configurados para o endereço publicado deste aplicativo.</p>
+      <div class="grid2">
+        <button onclick="location.href='qrcodes.html'">Abrir etiquetas</button>
+        <button onclick="copyCurrentBase()">Copiar endereço base</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Identidade da unidade</h3>
+      <div class="brand-card">
+        <img src="icon-512.png" alt="Brasão CBMRN">
+        <div><b>2ª CIA / 4º BBM</b><br><small>Currais Novos • Rio Grande do Norte</small></div>
+      </div>
+    </div>
+    <div class="card danger">
+      <h3>Limpar dados locais</h3>
+      <button onclick="clearData()">Apagar histórico</button>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button onclick="showView('home')">⌂<small>Início</small></button>
+  <button onclick="openPlans()">▶<small>Treinos</small></button>
+  <button onclick="openGroups()">▦<small>Exercícios</small></button>
+  <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
+</nav>
+
+<script src="data.js"></script>
+<script src="app-v31.js?v=31.0"></script>
+<div id="buildVersion" style="display:none">v31.0</div>
+</body>
+</html>
