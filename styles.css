@@ -610,3 +610,12 @@ nav button:first-child{color:#ff3038}
 .exercise-motion-card img{
   image-rendering:auto;
 }
+
+/* V27 — imagem dedicada HD: desenvolvimento com halteres */
+@media(max-width:480px){
+  .visual .imgbox img.realistic-exercise.hd-portrait{
+    height:205px;
+    object-fit:cover;
+    object-position:center 44%;
+  }
+}
