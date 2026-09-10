@@ -254,11 +254,93 @@
         <div><b>2ª CIA / 4º BBM</b><br><small>Currais Novos • Rio Grande do Norte</small></div>
       </div>
     </div>
+    <div class="card admin-entry-card">
+      <h3>Administração da unidade</h3>
+      <p>Cadastre, consulte, ative ou desative o acesso dos militares.</p>
+      <button onclick="openAdmin()">ABRIR ÁREA ADMINISTRATIVA</button>
+    </div>
     <div class="card danger">
       <h3>Limpar dados locais</h3>
       <button onclick="clearData()">Apagar histórico</button>
     </div>
   </section>
+  <section id="admin" class="view">
+    <div class="bar"><button onclick="showView('tools')">←</button><h2>Administração</h2></div>
+
+    <div id="adminLoginBox" class="card admin-login-card">
+      <div class="admin-shield">ADM</div>
+      <h3>Área restrita</h3>
+      <p>Disponível somente para administradores autorizados.</p>
+      <label>Código administrativo
+        <input id="adminCode" type="password" autocomplete="current-password"
+               placeholder="Digite seu código"
+               onkeydown="if(event.key==='Enter')adminLogin()">
+      </label>
+      <button class="admin-primary" onclick="adminLogin()">ENTRAR COMO ADMINISTRADOR</button>
+    </div>
+
+    <div id="adminPanel" style="display:none">
+      <div class="admin-topline">
+        <div>
+          <span class="eyebrow">GESTÃO DE ACESSOS</span>
+          <h3>Militares autorizados</h3>
+        </div>
+        <button class="admin-logout" onclick="adminLogout()">SAIR DO ADMIN</button>
+      </div>
+
+      <div id="adminMessage" class="admin-message"></div>
+
+      <div class="card">
+        <h3>Cadastrar militar</h3>
+        <div class="admin-form-grid">
+          <label>Matrícula
+            <input id="adminNewMatricula" inputmode="numeric" placeholder="Ex.: 2415720">
+          </label>
+          <label>Nome
+            <input id="adminNewNome" placeholder="Nome do militar">
+          </label>
+          <label>Graduação
+            <select id="adminNewGraduacao">
+              <option value="">Selecione</option>
+              <option>SD BM</option>
+              <option>CB BM</option>
+              <option>3º SGT BM</option>
+              <option>2º SGT BM</option>
+              <option>1º SGT BM</option>
+              <option>ST BM</option>
+              <option>2º TEN BM</option>
+              <option>1º TEN BM</option>
+              <option>CAP BM</option>
+              <option>MAJ BM</option>
+              <option>TC BM</option>
+              <option>CEL BM</option>
+            </select>
+          </label>
+        </div>
+        <button class="admin-primary" onclick="adminSaveMilitary()">SALVAR MILITAR</button>
+      </div>
+
+      <div class="card">
+        <div class="admin-list-head">
+          <h3>Militares cadastrados</h3>
+          <span id="adminMilitaryCount">0 militares</span>
+        </div>
+        <input id="adminSearch" class="admin-search" placeholder="Buscar por nome, matrícula ou graduação"
+               oninput="adminRenderMilitares()">
+        <div id="adminMilitaryList" class="admin-military-list"></div>
+      </div>
+
+      <details class="card admin-security-card">
+        <summary>Segurança administrativa</summary>
+        <p>Troque o código administrativo sempre que necessário.</p>
+        <label>Código atual<input id="adminCurrentCode" type="password"></label>
+        <label>Novo código<input id="adminNewCode" type="password" minlength="8"></label>
+        <label>Confirmar novo código<input id="adminConfirmCode" type="password" minlength="8"></label>
+        <button onclick="adminChangeCode()">ALTERAR CÓDIGO</button>
+      </details>
+    </div>
+  </section>
+
 </main>
 
 <nav>
@@ -268,9 +350,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=50.0"></script>
+<script src="cloud-config.js?v=51.0"></script>
 <script src="data.js"></script>
-<script src="app-v50.js?v=50.0"></script>
-<div id="buildVersion" style="display:none">v50.0</div>
+<script src="app-v51.js?v=51.0"></script>
+<div id="buildVersion" style="display:none">v51.0</div>
 </body>
 </html>

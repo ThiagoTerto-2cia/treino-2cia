@@ -1059,3 +1059,38 @@ nav button:first-child{color:#ff3038}
   #cloudUserBar .cloud-user-info b{font-size:.94rem}
   #cloudUserBar .cloud-user-meta{font-size:.63rem}
 }
+
+/* ===== V51 — ÁREA ADMINISTRATIVA ===== */
+.admin-entry-card{border-left:4px solid #c91f1f}
+.admin-entry-card button,.admin-primary{width:100%;background:linear-gradient(180deg,#dd2525,#a80f0f)!important;color:#fff!important;border:1px solid #ed4a4a!important;font-weight:900}
+.admin-login-card{text-align:center}
+.admin-shield{width:64px;height:64px;border-radius:18px;margin:0 auto 12px;display:grid;place-items:center;background:linear-gradient(180deg,#cf2424,#790b0b);border:1px solid #ec5555;color:#fff;font-weight:950;letter-spacing:.08em}
+#admin label{display:block;color:#bdbdbd;font-size:.78rem;font-weight:800;margin:10px 0;text-align:left}
+#admin input,#admin select{box-sizing:border-box;width:100%;margin-top:6px;padding:12px 13px;border-radius:11px;border:1px solid #414141;background:#090909;color:#fff;font-size:.94rem}
+#admin input:focus,#admin select:focus{outline:none;border-color:#c92727}
+.admin-topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px}
+.admin-topline h3{margin:3px 0 0}
+.admin-logout{background:#1a0d0d!important;color:#ff7171!important;border:1px solid #5b2323!important;padding:8px 10px!important;font-size:.68rem}
+.admin-message{min-height:20px;text-align:center;margin:5px 0 10px;font-size:.78rem;color:#aaa}
+.admin-message.error{color:#ff7171}
+.admin-message.success{color:#73d38a}
+.admin-form-grid{display:grid;grid-template-columns:1fr;gap:2px}
+.admin-list-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.admin-list-head h3{margin:0}
+.admin-list-head span{font-size:.7rem;color:#999}
+.admin-search{margin:12px 0!important}
+.admin-military-list{display:flex;flex-direction:column;gap:8px}
+.admin-military-row{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #353535;border-radius:12px;background:#0d0d0d}
+.admin-military-row.is-inactive{opacity:.62}
+.admin-military-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.admin-military-main b{color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-military-main span{font-size:.7rem;color:#999;margin-top:3px}
+.admin-military-row button{flex:0 0 auto;font-size:.63rem;padding:7px 8px}
+.admin-disable{background:#241010!important;color:#ff7474!important;border:1px solid #612626!important}
+.admin-enable{background:#102014!important;color:#80d696!important;border:1px solid #285936!important}
+.admin-loading,.admin-empty{padding:18px;text-align:center;color:#888;font-size:.8rem}
+.admin-security-card summary{cursor:pointer;color:#fff;font-weight:900}
+.admin-security-card p{color:#999;font-size:.8rem}
+@media (min-width:640px){
+  .admin-form-grid{grid-template-columns:1fr 1.5fr 1fr;gap:10px}
+}
