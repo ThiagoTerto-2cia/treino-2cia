@@ -781,3 +781,96 @@ nav button:first-child{color:#ff3038}
   position:sticky;bottom:72px;z-index:8;padding:10px 0 calc(4px + env(safe-area-inset-bottom));
   background:linear-gradient(180deg,transparent,#0b0b0b 28%);
 }
+
+
+/* ===== V36 — AJUSTE VISUAL TELA TREINOS ===== */
+#plans .bar{
+  margin-bottom:14px;
+}
+
+.build-workout-cta{
+  box-sizing:border-box;
+  width:100%;
+  min-height:94px;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) 24px;
+  align-items:center;
+  column-gap:13px;
+  margin:8px 0 22px;
+  padding:16px 15px;
+  overflow:hidden;
+}
+
+.build-workout-icon{
+  width:46px;
+  height:46px;
+  flex:none;
+}
+
+.build-workout-copy{
+  min-width:0;
+  display:block;
+  line-height:1.18;
+}
+
+.build-workout-copy b{
+  display:block;
+  margin:0 0 6px;
+  font-size:1rem;
+  line-height:1.15;
+  white-space:normal;
+  word-break:normal;
+}
+
+.build-workout-copy small{
+  display:block;
+  margin:0;
+  max-width:100%;
+  font-size:.78rem;
+  line-height:1.32;
+  color:#b9b9b9;
+  white-space:normal;
+}
+
+.build-workout-cta .chev{
+  display:block;
+  margin:0;
+  text-align:right;
+  font-size:1.7rem;
+  line-height:1;
+  color:#a7a7a7;
+}
+
+#plans .section-label{
+  margin:0 3px 10px;
+  font-size:.74rem;
+  line-height:1.2;
+}
+
+#plans .custom-label{
+  margin-top:24px;
+}
+
+#customPlanList .custom-empty{
+  margin-top:0;
+  padding:14px 15px;
+  line-height:1.35;
+}
+
+@media (max-width:380px){
+  .build-workout-cta{
+    grid-template-columns:42px minmax(0,1fr) 18px;
+    column-gap:10px;
+    padding:14px 12px;
+  }
+  .build-workout-icon{
+    width:42px;
+    height:42px;
+  }
+  .build-workout-copy b{
+    font-size:.93rem;
+  }
+  .build-workout-copy small{
+    font-size:.74rem;
+  }
+}
