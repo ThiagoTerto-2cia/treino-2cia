@@ -1097,3 +1097,43 @@ nav button:first-child{color:#ff3038}
 
 /* V55 */
 .v55-profile-hero{display:flex;align-items:center;gap:14px;padding:16px 4px}.v55-profile-hero h2{margin:2px 0}.v55-profile-hero span,.v55-profile-hero small{color:#aaa}.v55-avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:20px;border:2px solid #d52b2b;background:#140606}.v55-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.v55-stat{background:#111;border:1px solid #292929;border-radius:14px;padding:14px}.v55-stat b{display:block;font-size:25px}.v55-stat span{font-size:12px;color:#999}.v55-big{font-size:30px;font-weight:900;margin:8px 0}.v55-big small{font-size:13px;color:#999}.v55-rank-title{padding:12px 3px}.v55-rank-title h2{margin:3px 0}.v55-rank{display:flex;align-items:center;gap:12px;margin:8px 0}.v55-rank.me{border-color:#d52b2b;box-shadow:inset 3px 0 #d52b2b}.v55-pos{width:45px;text-align:center;font-weight:900}.v55-person{display:flex;flex:1;flex-direction:column}.v55-person span,.v55-score span{font-size:11px;color:#999}.v55-score{display:flex;flex-direction:column;text-align:right}.v55-score b{font-size:22px}.v55-note{text-align:center;color:#888;font-size:11px;padding:10px 5px 24px}
+
+
+/* V56 — Mobilidade & Recuperação */
+.mobility-hero{padding:4px 2px 12px}
+.mobility-hero h3{font-size:24px;margin:6px 0}
+.mobility-hero p,.mobility-routine-head p{color:#aaa;line-height:1.45;margin:6px 0 0}
+.mobility-grid{display:grid;gap:10px}
+.mobility-card{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:15px;border:1px solid #303030;border-left:4px solid #d8262f;border-radius:16px;background:linear-gradient(145deg,#171717,#0e0e0e);color:#fff}
+.mobility-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:1px solid #d8262f;background:#1c0809;font-size:20px;flex:0 0 auto}
+.mobility-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.mobility-copy b{font-size:16px}
+.mobility-copy small{font-size:11px;color:#9b9b9b;line-height:1.25}
+.mobility-time{font-size:12px;font-weight:800;color:#f0f0f0;border:1px solid #3b3b3b;border-radius:999px;padding:6px 8px;white-space:nowrap}
+.mobility-note{margin-top:14px;padding:12px 14px;border:1px solid #303030;border-radius:14px;color:#999;font-size:12px;line-height:1.4}
+.mobility-note b{color:#ddd}
+.mobility-routine-head{padding:2px 2px 10px}
+.mobility-mini-back{background:transparent;border:0;color:#ddd;padding:6px 0;margin-bottom:8px;font-weight:800}
+.mobility-routine-head h3{font-size:26px;margin:3px 0}
+.mobility-progress{height:7px;background:#222;border-radius:999px;overflow:hidden;margin:6px 0 14px}
+.mobility-progress span{display:block;height:100%;background:#d8262f;border-radius:999px;transition:width .25s ease}
+.mobility-step-card{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid #303030;border-left:4px solid #d8262f;border-radius:17px;padding:18px;margin-bottom:12px}
+.mobility-step-label{font-size:11px;font-weight:900;letter-spacing:.08em;color:#d65b60}
+.mobility-step-card h2{font-size:24px;margin:8px 0}
+.mobility-step-card p{color:#aaa;line-height:1.45;min-height:42px}
+.mobility-clock{font-size:46px;font-weight:900;letter-spacing:.03em;text-align:center;margin:18px 0}
+.mobility-controls{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px}
+.mobility-controls button{font-size:11px;padding:12px 6px}
+.mobility-controls button:disabled{opacity:.35}
+.mobility-list{display:grid;gap:7px;padding-bottom:24px}
+.mobility-list-row{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid #262626;border-radius:12px;background:#101010}
+.mobility-list-row>span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;border:1px solid #444;font-size:11px;font-weight:900}
+.mobility-list-row>div{display:flex;flex-direction:column;gap:2px}
+.mobility-list-row small{color:#858585}
+.mobility-list-row.active{border-color:#d8262f}
+.mobility-list-row.active>span,.mobility-list-row.done>span{background:#d8262f;border-color:#d8262f;color:#fff}
+.mobility-list-row.done{opacity:.65}
+.mobility-complete{text-align:center;padding:54px 12px 20px}
+.mobility-complete-icon{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;border:3px solid #d8262f;background:#1d090a;font-size:34px;font-weight:900}
+.mobility-complete h2{font-size:30px;margin:8px 0}
+.mobility-complete p{color:#999;margin-bottom:22px}
