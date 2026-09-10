@@ -619,3 +619,12 @@ nav button:first-child{color:#ff3038}
     object-position:center 44%;
   }
 }
+
+/* V28 — Treino D em enquadramento HD uniforme */
+@media(max-width:480px){
+  .visual .imgbox img.realistic-exercise.hd-portrait{
+    height:205px;
+    object-fit:cover;
+    object-position:center;
+  }
+}
