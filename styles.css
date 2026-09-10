@@ -1137,3 +1137,148 @@ nav button:first-child{color:#ff3038}
 .mobility-complete-icon{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;border:3px solid #d8262f;background:#1d090a;font-size:34px;font-weight:900}
 .mobility-complete h2{font-size:30px;margin:8px 0}
 .mobility-complete p{color:#999;margin-bottom:22px}
+
+
+/* V57 — animações auxiliares de mobilidade */
+.mobility-animation-card{
+  margin:14px 0 10px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid #303030;
+  background:radial-gradient(circle at 50% 35%,rgba(190,20,28,.14),rgba(10,10,10,.96) 58%);
+  overflow:hidden;
+}
+.mobility-animation-label{
+  font-size:10px;
+  letter-spacing:.12em;
+  font-weight:900;
+  color:#d85b61;
+  margin-bottom:2px;
+}
+.mobility-svg{
+  display:block;
+  width:100%;
+  max-height:220px;
+  margin:0 auto;
+}
+.mobility-svg .mob-head{fill:#171717;stroke:#f0f0f0;stroke-width:5}
+.mobility-svg .mob-body,
+.mobility-svg .mob-limb{stroke:#f0f0f0;stroke-width:9;stroke-linecap:round}
+.mobility-svg .mob-arrow{fill:none;stroke:#e1262f;stroke-width:6;stroke-linecap:round;filter:url(#mobGlow)}
+.mobility-svg .mob-focus{fill:none;stroke:#e1262f;stroke-width:3;opacity:.32}
+.mobility-svg-label{fill:#a9a9a9;font-size:12px;font-weight:700}
+.mobility-animation-hint{font-size:11px;color:#969696;text-align:center;line-height:1.35;margin-top:-2px}
+
+/* movimentos */
+.mobility-shoulder .mob-arm-l{transform-origin:160px 78px;animation:mobShoulderL 2.2s ease-in-out infinite alternate}
+.mobility-shoulder .mob-arm-r{transform-origin:160px 78px;animation:mobShoulderR 2.2s ease-in-out infinite alternate}
+@keyframes mobShoulderL{from{transform:rotate(12deg)}to{transform:rotate(-58deg)}}
+@keyframes mobShoulderR{from{transform:rotate(-12deg)}to{transform:rotate(58deg)}}
+
+.mobility-arms .mob-arm-l{transform-origin:160px 78px;animation:mobArmsL 2s ease-in-out infinite alternate}
+.mobility-arms .mob-arm-r{transform-origin:160px 78px;animation:mobArmsR 2s ease-in-out infinite alternate}
+@keyframes mobArmsL{from{transform:rotate(0deg)}to{transform:rotate(-78deg)}}
+@keyframes mobArmsR{from{transform:rotate(0deg)}to{transform:rotate(78deg)}}
+
+.mobility-twist .mob-body,.mobility-twist .mob-head,.mobility-twist .mob-arm-l,.mobility-twist .mob-arm-r{
+  transform-origin:160px 108px;animation:mobTwist 2.2s ease-in-out infinite alternate
+}
+@keyframes mobTwist{from{transform:skewX(-10deg) translateX(-7px)}to{transform:skewX(10deg) translateX(7px)}}
+
+.mobility-pec .mob-arm-l{transform-origin:160px 78px;animation:mobPecL 2s ease-in-out infinite alternate}
+.mobility-pec .mob-arm-r{transform-origin:160px 78px;animation:mobPecR 2s ease-in-out infinite alternate}
+@keyframes mobPecL{from{transform:rotate(-8deg)}to{transform:rotate(28deg)}}
+@keyframes mobPecR{from{transform:rotate(8deg)}to{transform:rotate(-28deg)}}
+
+.mobility-breath .mob-focus-a{animation:mobBreath 3s ease-in-out infinite}
+@keyframes mobBreath{0%,100%{transform:scale(.75);opacity:.18}50%{transform:scale(1.18);opacity:.6}}
+
+.mobility-catcow .mob-body{transform-origin:160px 95px;animation:mobCat 1.8s ease-in-out infinite alternate}
+@keyframes mobCat{from{transform:skewX(-10deg) scaleY(.92)}to{transform:skewX(10deg) scaleY(1.08)}}
+
+.mobility-child .mob-body,.mobility-child .mob-head,.mobility-child .mob-arm-l,.mobility-child .mob-arm-r{
+  transform-origin:160px 126px;animation:mobChild 2s ease-in-out infinite alternate
+}
+@keyframes mobChild{from{transform:rotate(0deg) translateY(0)}to{transform:rotate(26deg) translateY(16px)}}
+
+.mobility-knees .mob-leg-l{transform-origin:160px 126px;animation:mobKneeL 1.7s ease-in-out infinite alternate}
+.mobility-knees .mob-leg-r{transform-origin:160px 126px;animation:mobKneeR 1.7s ease-in-out infinite alternate}
+@keyframes mobKneeL{from{transform:rotate(0)}to{transform:rotate(50deg) translateX(10px)}}
+@keyframes mobKneeR{from{transform:rotate(0)}to{transform:rotate(-50deg) translateX(-10px)}}
+
+.mobility-birddog .mob-arm-r{transform-origin:160px 78px;animation:mobBirdArm 1.8s ease-in-out infinite alternate}
+.mobility-birddog .mob-leg-l{transform-origin:160px 126px;animation:mobBirdLeg 1.8s ease-in-out infinite alternate}
+@keyframes mobBirdArm{to{transform:rotate(-58deg)}}
+@keyframes mobBirdLeg{to{transform:rotate(52deg)}}
+
+.mobility-hip90 .mob-leg-l{transform-origin:160px 126px;animation:mobHipL 2s ease-in-out infinite alternate}
+.mobility-hip90 .mob-leg-r{transform-origin:160px 126px;animation:mobHipR 2s ease-in-out infinite alternate}
+@keyframes mobHipL{to{transform:rotate(42deg)}}
+@keyframes mobHipR{to{transform:rotate(-42deg)}}
+
+.mobility-lunge .mob-body,.mobility-lunge .mob-head,.mobility-lunge .mob-arm-l,.mobility-lunge .mob-arm-r{
+  animation:mobLungeBody 1.8s ease-in-out infinite alternate
+}
+.mobility-lunge .mob-leg-l{transform-origin:160px 126px;animation:mobLungeL 1.8s ease-in-out infinite alternate}
+.mobility-lunge .mob-leg-r{transform-origin:160px 126px;animation:mobLungeR 1.8s ease-in-out infinite alternate}
+@keyframes mobLungeBody{to{transform:translateY(20px)}}
+@keyframes mobLungeL{to{transform:rotate(22deg)}}
+@keyframes mobLungeR{to{transform:rotate(-30deg)}}
+
+.mobility-squat .mob-body,.mobility-squat .mob-head,.mobility-squat .mob-arm-l,.mobility-squat .mob-arm-r{
+  animation:mobSquatBody 1.7s ease-in-out infinite alternate
+}
+.mobility-squat .mob-leg-l{transform-origin:160px 126px;animation:mobSquatL 1.7s ease-in-out infinite alternate}
+.mobility-squat .mob-leg-r{transform-origin:160px 126px;animation:mobSquatR 1.7s ease-in-out infinite alternate}
+@keyframes mobSquatBody{to{transform:translateY(34px)}}
+@keyframes mobSquatL{to{transform:rotate(24deg)}}
+@keyframes mobSquatR{to{transform:rotate(-24deg)}}
+
+.mobility-hiprot .mob-leg-l{transform-origin:160px 126px;animation:mobHipRotL 2s ease-in-out infinite alternate}
+.mobility-hiprot .mob-leg-r{transform-origin:160px 126px;animation:mobHipRotR 2s ease-in-out infinite alternate}
+@keyframes mobHipRotL{to{transform:rotate(28deg)}}
+@keyframes mobHipRotR{to{transform:rotate(-28deg)}}
+
+.mobility-bridge .mob-body{transform-origin:160px 126px;animation:mobBridge 1.8s ease-in-out infinite alternate}
+@keyframes mobBridge{to{transform:translateY(-25px) scaleY(.92)}}
+
+.mobility-glute .mob-leg-l{transform-origin:160px 126px;animation:mobGlute 1.9s ease-in-out infinite alternate}
+@keyframes mobGlute{to{transform:rotate(48deg) translateX(12px)}}
+
+.mobility-kneeflex .mob-leg-r{transform-origin:160px 126px;animation:mobKneeFlex 1.7s ease-in-out infinite alternate}
+@keyframes mobKneeFlex{to{transform:rotate(-58deg)}}
+
+.mobility-calf .mob-body,.mobility-calf .mob-head,.mobility-calf .mob-arm-l,.mobility-calf .mob-arm-r,.mobility-calf .mob-leg-l,.mobility-calf .mob-leg-r{
+  animation:mobCalf 1.5s ease-in-out infinite alternate
+}
+@keyframes mobCalf{to{transform:translateY(-16px)}}
+
+.mobility-wallsit .mob-body,.mobility-wallsit .mob-head,.mobility-wallsit .mob-arm-l,.mobility-wallsit .mob-arm-r{
+  animation:mobWallSit 1.7s ease-in-out infinite alternate
+}
+.mobility-wallsit .mob-leg-l,.mobility-wallsit .mob-leg-r{transform-origin:160px 126px;animation:mobWallLeg 1.7s ease-in-out infinite alternate}
+@keyframes mobWallSit{to{transform:translateY(28px)}}
+@keyframes mobWallLeg{to{transform:rotate(22deg)}}
+
+.mobility-ankle .mob-leg-r{transform-origin:188px 184px;animation:mobAnkle 1.4s linear infinite}
+@keyframes mobAnkle{to{transform:rotate(360deg)}}
+
+.mobility-kneewall .mob-body,.mobility-kneewall .mob-head,.mobility-kneewall .mob-arm-l,.mobility-kneewall .mob-arm-r{
+  animation:mobKneeWall 1.8s ease-in-out infinite alternate
+}
+@keyframes mobKneeWall{to{transform:translateX(18px)}}
+
+.mobility-toe .mob-leg-l,.mobility-toe .mob-leg-r{transform-origin:160px 184px;animation:mobToe 1.4s ease-in-out infinite alternate}
+@keyframes mobToe{to{transform:rotate(-8deg) translateY(-7px)}}
+
+.mobility-shift .mob-body,.mobility-shift .mob-head,.mobility-shift .mob-arm-l,.mobility-shift .mob-arm-r{
+  animation:mobShift 2s ease-in-out infinite alternate
+}
+@keyframes mobShift{from{transform:translateX(-16px)}to{transform:translateX(16px)}}
+
+.mobility-general .mob-focus-a{animation:mobPulse 1.8s ease-in-out infinite}
+@keyframes mobPulse{0%,100%{opacity:.15}50%{opacity:.6}}
+
+@media (prefers-reduced-motion: reduce){
+  .mobility-svg *{animation:none!important}
+}
