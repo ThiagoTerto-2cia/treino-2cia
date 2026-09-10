@@ -44,6 +44,20 @@
       <p>DISCIPLINA • TREINO • PRONTIDÃO</p>
     </div>
 
+
+    <div id="cloudUserBar" class="cloud-user-card" style="display:none">
+      <div class="cloud-user-badge">BM</div>
+      <div class="cloud-user-info">
+        <span class="cloud-user-eyebrow">MILITAR IDENTIFICADO</span>
+        <b id="cloudUserName">Militar</b>
+        <span class="cloud-user-meta"><span id="cloudUserGraduacao"></span><span id="cloudUserMatricula"></span></span>
+      </div>
+      <div class="cloud-user-actions">
+        <small id="cloudUserStatus">Sincronizado</small>
+        <button onclick="cloudLogout()">SAIR</button>
+      </div>
+    </div>
+
     <div class="primary-actions">
       <button class="action-card action-main" onclick="openPlans()">
         <span class="action-icon">▶</span>
@@ -254,9 +268,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=42.0"></script>
+<script src="cloud-config.js?v=43.0"></script>
 <script src="data.js"></script>
-<script src="app-v42.js?v=42.0"></script>
-<div id="buildVersion" style="display:none">v42.0</div>
+<script src="app-v43.js?v=43.0"></script>
+<div id="buildVersion" style="display:none">v43.0</div>
 </body>
 </html>

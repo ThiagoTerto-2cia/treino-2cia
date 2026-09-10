@@ -904,3 +904,71 @@ nav button:first-child{color:#ff3038}
 .cloud-user-actions{text-align:right;display:flex;flex-direction:column;gap:3px;align-items:flex-end}
 .cloud-user-actions small{color:#71c887;font-size:.68rem}
 .cloud-user-actions button{border:0;background:transparent;color:#e65b5b;font-size:.68rem;font-weight:900;padding:0}
+
+/* ===== V43 — IDENTIFICAÇÃO DO MILITAR ===== */
+.cloud-user-card{
+  margin:14px 0 16px;
+  padding:13px 14px;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(255,63,63,.38);
+  border-left:4px solid #ef2525;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(28,28,28,.98),rgba(14,14,14,.98));
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+}
+.cloud-user-badge{
+  width:46px;height:46px;min-width:46px;
+  border-radius:50%;
+  display:grid;place-items:center;
+  font-weight:950;font-size:.78rem;letter-spacing:.05em;
+  color:#fff;
+  background:linear-gradient(180deg,#df2727,#8e1010);
+  border:2px solid rgba(255,255,255,.18);
+}
+.cloud-user-info{display:flex;flex-direction:column;flex:1;min-width:0}
+.cloud-user-eyebrow{
+  color:#e44b4b;
+  font-size:.64rem;
+  font-weight:900;
+  letter-spacing:.11em;
+  margin-bottom:2px;
+}
+.cloud-user-info b{
+  color:#fff;
+  font-size:1.04rem;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cloud-user-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 8px;
+  color:#aaa;
+  font-size:.72rem;
+  margin-top:3px;
+}
+.cloud-user-meta #cloudUserGraduacao:not(:empty)::after{content:" •";margin-left:5px}
+.cloud-user-actions{
+  min-width:72px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:5px;
+}
+.cloud-user-actions small{
+  color:#79d38d;
+  font-size:.66rem;
+  font-weight:800;
+}
+.cloud-user-actions button{
+  border:1px solid #5a2525;
+  background:#1b1010;
+  color:#ff6d6d;
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:.65rem;
+  font-weight:900;
+}
