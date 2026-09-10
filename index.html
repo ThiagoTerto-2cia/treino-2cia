@@ -16,6 +16,24 @@
 </div>
 
 
+<div id="authGate" class="auth-gate" aria-label="Acesso do militar">
+  <div class="auth-shell">
+    <img class="auth-crest" src="icon-512.png" alt="Brasão CBMRN">
+    <div class="auth-unit">2ª CIA / 4º BBM</div>
+    <h1>ACADEMIA • CURRAIS NOVOS</h1>
+    <p class="auth-motto">DISCIPLINA • TREINO • PRONTIDÃO</p>
+    <div class="auth-panel">
+      <div class="auth-label">ACESSO DO MILITAR</div>
+      <p class="auth-help">Informe sua matrícula para acessar seu treino e progresso individual.</p>
+      <label>Matrícula
+        <input id="loginMatricula" inputmode="numeric" autocomplete="username" placeholder="Digite sua matrícula" onkeydown="if(event.key==='Enter')cloudLogin()">
+      </label>
+      <button class="auth-primary" onclick="cloudLogin()">ACESSAR</button>
+      <div id="authMessage" class="auth-message"></div>
+    </div>
+  </div>
+</div>
+
 <main class="wrap">
   <section id="home" class="view active">
     <div class="home-hero">
@@ -236,8 +254,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
+<script src="cloud-config.js?v=41.0"></script>
 <script src="data.js"></script>
-<script src="app-v37.js?v=37.0"></script>
-<div id="buildVersion" style="display:none">v37.0</div>
+<script src="app-v41.js?v=41.0"></script>
+<div id="buildVersion" style="display:none">v41.0</div>
 </body>
 </html>
