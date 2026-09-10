@@ -254,6 +254,8 @@
         <div><b>2ª CIA / 4º BBM</b><br><small>Currais Novos • Rio Grande do Norte</small></div>
       </div>
     </div>
+    <div class="card"><h3>Meu perfil</h3><p>Veja sua ficha operacional e estatísticas de treino.</p><button onclick="openV55Profile()">ABRIR MEU PERFIL</button></div>
+    <div class="card"><h3>🏆 Ranking 2ª CIA</h3><p>Ranking mensal por constância de treino.</p><button onclick="openV55Ranking()">VER RANKING</button></div>
     <div id="adminEntryCard" class="card admin-entry-card" style="display:none">
       <h3>Administração da unidade</h3>
       <p>Cadastre, consulte, ative ou desative o acesso dos militares.</p>
@@ -264,6 +266,8 @@
       <button onclick="clearData()">Apagar histórico</button>
     </div>
   </section>
+  <section id="v55Profile" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
+  <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking 2ª CIA</h2></div><div id="v55RankingContent"></div></section>
   <section id="admin" class="view">
     <div class="bar"><button onclick="showView('tools')">←</button><h2>Administração</h2></div>
 
@@ -350,9 +354,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=54.0"></script>
+<script src="cloud-config.js?v=55.0"></script>
 <script src="data.js"></script>
-<script src="app-v54.js?v=54.0"></script>
-<div id="buildVersion" style="display:none">v54.0</div>
+<script src="app-v55.js?v=55.0"></script>
+<div id="buildVersion" style="display:none">v55.0</div>
 </body>
 </html>
