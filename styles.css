@@ -972,3 +972,90 @@ nav button:first-child{color:#ff3038}
   font-size:.65rem;
   font-weight:900;
 }
+
+/* ===== V44 — CARTÃO DO MILITAR / AJUSTE MOBILE ===== */
+#cloudUserBar.cloud-user-card{
+  box-sizing:border-box;
+  width:calc(100% - 44px);
+  margin:14px 22px 16px;
+  padding:13px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  overflow:hidden;
+}
+#cloudUserBar .cloud-user-badge{
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  min-width:44px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:.72rem;
+  line-height:1;
+}
+#cloudUserBar .cloud-user-info{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  text-align:left;
+}
+#cloudUserBar .cloud-user-eyebrow{
+  display:block;
+  width:100%;
+  margin:0 0 3px;
+  font-size:.58rem;
+  line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#cloudUserBar .cloud-user-info b{
+  display:block;
+  width:100%;
+  margin:0;
+  font-size:1rem;
+  line-height:1.15;
+}
+#cloudUserBar .cloud-user-meta{
+  display:flex;
+  width:100%;
+  align-items:center;
+  gap:5px;
+  margin-top:3px;
+  font-size:.68rem;
+  line-height:1.15;
+  white-space:nowrap;
+}
+#cloudUserBar .cloud-user-actions{
+  flex:0 0 82px;
+  min-width:82px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:center;
+  gap:6px;
+  text-align:right;
+}
+#cloudUserBar .cloud-user-actions small{
+  display:block;
+  font-size:.62rem;
+  line-height:1;
+  white-space:nowrap;
+}
+#cloudUserBar .cloud-user-actions button{
+  display:block;
+  min-width:52px;
+  padding:5px 8px;
+  line-height:1;
+}
+@media (max-width:390px){
+  #cloudUserBar.cloud-user-card{width:calc(100% - 28px);margin-left:14px;margin-right:14px;padding:11px 10px;gap:9px}
+  #cloudUserBar .cloud-user-badge{flex-basis:40px;width:40px;height:40px;min-width:40px}
+  #cloudUserBar .cloud-user-actions{flex-basis:72px;min-width:72px}
+  #cloudUserBar .cloud-user-info b{font-size:.94rem}
+  #cloudUserBar .cloud-user-meta{font-size:.63rem}
+}
