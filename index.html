@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-0.css?v=67.0">
+<link rel="stylesheet" href="styles-v67-1.css?v=67.1">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -80,8 +80,8 @@
         <span class="feature-icon">⌁</span><span><b>MOBILIDADE & RECUPERAÇÃO</b><small>Prepare, movimente e recupere</small></span><span class="chev">›</span>
       </button>
       
-      <button class="feature-card future-feature-card" type="button" disabled aria-disabled="true">
-        <span class="feature-icon">＋</span><span><b>PRÓXIMA INOVAÇÃO</b><small>Espaço reservado • em breve</small></span><span class="chev">•</span>
+      <button class="feature-card core-home-card" onclick="openCoreOperational()">
+        <span class="feature-icon">🛡️</span><span><b>CORE OPERACIONAL</b><small>Estabilidade, carga e controle para o serviço</small></span><span class="chev">›</span>
       </button>
     </div>
 
@@ -273,6 +273,11 @@
     <div id="stretchList" class="stack"></div>
   </section>
 
+  <section id="coreOperational" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Core Operacional</h2></div>
+    <div id="coreOperationalList" class="stack"></div>
+  </section>
+
   <section id="tools" class="view">
     <div class="bar"><button onclick="showView('home')">←</button><h2>Ferramentas</h2></div>
     <div class="card">
@@ -407,9 +412,9 @@
   <button type="button" onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=67.0"></script>
+<script src="cloud-config.js?v=67.1"></script>
 <script src="data.js"></script>
-<script src="app-v67-0.js?v=67.0"></script>
-<div id="buildVersion" style="display:none">v67.0</div>
+<script src="app-v67-1.js?v=67.1"></script>
+<div id="buildVersion" style="display:none">v67.1</div>
 </body>
 </html>
