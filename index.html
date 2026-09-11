@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v65.css?v=65.0">
+<link rel="stylesheet" href="styles-v65-1.css?v=65.1">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -69,27 +69,21 @@
       </button>
     </div>
 
-    <button class="last-card" onclick="showView('history');renderHistory()">
-      <div class="last-icon">▥</div>
-      <div>
-        <span class="eyebrow">ÚLTIMO REGISTRO</span>
-        <strong id="lastWorkout">Nenhum treino registrado.</strong>
-      </div>
-      <span class="chev">›</span>
-    </button>
-
     <div class="feature-grid">
-      <button class="feature-card" onclick="showView('progress');renderProgress()">
-        <span class="feature-icon">↗</span><span><b>EVOLUÇÃO</b><small>Acompanhe seu progresso</small></span><span class="chev">›</span>
-      </button>
       <button class="feature-card" onclick="showView('history');renderHistory()">
         <span class="feature-icon">▣</span><span><b>HISTÓRICO</b><small>Todos os seus treinos</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card taf-home-card" onclick="openTAF()">
+        <span class="feature-icon">🔥</span><span><b>MEU TAF</b><small>Índices, pontuação e metas</small></span><span class="chev">›</span>
       </button>
       <button class="feature-card" onclick="showView('stretch');renderStretch()">
         <span class="feature-icon">⌁</span><span><b>MOBILIDADE & RECUPERAÇÃO</b><small>Prepare, movimente e recupere</small></span><span class="chev">›</span>
       </button>
       <button class="feature-card" onclick="showView('tools')">
         <span class="feature-icon">⚙</span><span><b>FERRAMENTAS</b><small>Backup, QR e extras</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card future-feature-card" type="button" disabled aria-disabled="true">
+        <span class="feature-icon">＋</span><span><b>PRÓXIMA INOVAÇÃO</b><small>Espaço reservado • em breve</small></span><span class="chev">•</span>
       </button>
     </div>
 
@@ -365,9 +359,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=65.0"></script>
+<script src="cloud-config.js?v=65.1"></script>
 <script src="data.js"></script>
-<script src="app-v65.js?v=65.0"></script>
-<div id="buildVersion" style="display:none">v65.0</div>
+<script src="app-v65-1.js?v=65.1"></script>
+<div id="buildVersion" style="display:none">v65.1</div>
 </body>
 </html>
