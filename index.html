@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v65-2.css?v=65.2">
+<link rel="stylesheet" href="styles-v66.css?v=66.0">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -59,7 +59,7 @@
     </div>
 
     <div class="primary-actions">
-      <button class="action-card action-main" onclick="openPlans()">
+      <button class="action-card action-main" onclick="openWorkoutChooser()">
         <span class="action-icon">▶</span>
         <span><b>INICIAR TREINO</b><small>Registre seu desempenho</small></span>
       </button>
@@ -95,8 +95,56 @@
     <div id="groupGrid" class="stack"></div>
   </section>
 
-  <section id="plans" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Treinos</h2></div>
+  
+  <section id="workoutChooser" class="view">
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Iniciar treino</h2></div>
+
+    <div class="card service-day-card">
+      <span class="eyebrow">SITUAÇÃO DO DIA</span>
+      <h3>Você está de serviço hoje?</h3>
+      <p>Essa informação acompanha o treino. Somente treinos realizados em dia de serviço contam no Ranking de Constância.</p>
+      <div class="service-toggle-grid">
+        <button id="serviceYes" class="service-choice" onclick="setWorkoutServiceDay(true)">🚒 SIM, ESTOU DE SERVIÇO</button>
+        <button id="serviceNo" class="service-choice" onclick="setWorkoutServiceDay(false)">🏠 NÃO ESTOU DE SERVIÇO</button>
+      </div>
+      <small id="serviceChoiceHint">Selecione uma opção para continuar.</small>
+    </div>
+
+    <div class="section-label">ESCOLHA O TIPO DE TREINO</div>
+    <div class="workout-type-grid">
+      <button class="workout-type-card" onclick="openFreeWorkout()">
+        <span class="workout-type-icon">⚡</span><b>TREINO LIVRE</b>
+        <small>Informe os grupos musculares e o tempo do treino</small>
+      </button>
+      <button class="workout-type-card" onclick="openReadyPlans()">
+        <span class="workout-type-icon">🏋️</span><b>TREINO PRONTO</b>
+        <small>Escolha um dos treinos preparados pela unidade</small>
+      </button>
+      <button class="workout-type-card" onclick="openPersonalizedWorkouts()">
+        <span class="workout-type-icon">🧩</span><b>TREINO PERSONALIZADO</b>
+        <small>Monte ou escolha seu treino com exercícios da biblioteca</small>
+      </button>
+    </div>
+  </section>
+
+  <section id="freeWorkout" class="view">
+    <div class="bar"><button onclick="openWorkoutChooser()">←</button><h2>Treino livre</h2></div>
+    <div class="card">
+      <span class="eyebrow">GRUPOS MUSCULARES</span>
+      <h3>O que você treinou?</h3>
+      <div id="freeMuscleGroups" class="free-muscle-grid"></div>
+    </div>
+    <div class="card">
+      <label>Tempo de treino (minutos)
+        <input id="freeWorkoutMinutes" type="number" min="1" max="600" inputmode="numeric" placeholder="Ex.: 60">
+      </label>
+      <p class="free-note">O treino livre registra somente grupos musculares e duração. Para valer no ranking, além de ser realizado em dia de serviço, deve atender ao critério mínimo definido para treino livre.</p>
+      <button class="big red" onclick="saveFreeWorkout()">SALVAR TREINO LIVRE</button>
+    </div>
+  </section>
+
+<section id="plans" class="view">
+    <div class="bar"><button onclick="openWorkoutChooser()">←</button><h2 id="plansModeTitle">Treinos</h2></div>
 
     <button class="build-workout-cta" onclick="openCustomBuilder()">
       <span class="build-workout-icon">＋</span>
@@ -115,7 +163,7 @@
   </section>
 
   <section id="customBuilder" class="view">
-    <div class="bar"><button onclick="openPlans()">←</button><h2 id="customBuilderTitle">Montar meu treino</h2></div>
+    <div class="bar"><button onclick="openPlans('custom')">←</button><h2 id="customBuilderTitle">Montar meu treino</h2></div>
 
     <div class="card builder-name-card">
       <label class="builder-name-label">Nome do treino
@@ -354,14 +402,14 @@
 
 <nav>
   <button onclick="showView('home')">⌂<small>Início</small></button>
-  <button onclick="openPlans()">▶<small>Treinos</small></button>
+  <button onclick="openWorkoutChooser()">▶<small>Treinos</small></button>
   <button onclick="openGroups()">▦<small>Exercícios</small></button>
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=65.2"></script>
+<script src="cloud-config.js?v=66.0"></script>
 <script src="data.js"></script>
-<script src="app-v65-2.js?v=65.2"></script>
-<div id="buildVersion" style="display:none">v65.2</div>
+<script src="app-v66.js?v=66.0"></script>
+<div id="buildVersion" style="display:none">v66.0</div>
 </body>
 </html>
