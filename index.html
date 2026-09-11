@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v66-1.css?v=66.1">
+<link rel="stylesheet" href="styles-v66-2.css?v=66.2">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -70,11 +70,11 @@
     </div>
 
     <div class="feature-grid">
-      <button class="feature-card" onclick="showView('history');renderHistory()">
-        <span class="feature-icon">▣</span><span><b>HISTÓRICO</b><small>Todos os seus treinos</small></span><span class="chev">›</span>
-      </button>
       <button class="feature-card taf-home-card" onclick="openTAF()">
         <span class="feature-icon">🔥</span><span><b>MEU TAF</b><small>Índices, pontuação e metas</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card ranking-home-card" onclick="openV55Ranking()">
+        <span class="feature-icon">🏆</span><span><b>RANKING DE FREQUÊNCIA</b><small>Treinos válidos realizados em dias de serviço</small></span><span class="chev">›</span>
       </button>
       <button class="feature-card" onclick="showView('stretch');renderStretch()">
         <span class="feature-icon">⌁</span><span><b>MOBILIDADE & RECUPERAÇÃO</b><small>Prepare, movimente e recupere</small></span><span class="chev">›</span>
@@ -102,7 +102,7 @@
     <div class="card service-day-card">
       <span class="eyebrow">SITUAÇÃO DO DIA</span>
       <h3>Você está de serviço hoje?</h3>
-      <p>Essa informação acompanha o treino. Somente treinos realizados em dia de serviço contam no Ranking de Constância.</p>
+      <p>Essa informação acompanha o treino. Somente treinos realizados em dia de serviço podem contar no Ranking de Frequência, desde que cumpram os critérios mínimos.</p>
       <div class="service-toggle-grid">
         <button id="serviceYes" class="service-choice" onclick="setWorkoutServiceDay(true)">🚒 SIM, ESTOU DE SERVIÇO</button>
         <button id="serviceNo" class="service-choice" onclick="setWorkoutServiceDay(false)">🏠 NÃO ESTOU DE SERVIÇO</button>
@@ -219,6 +219,7 @@
         <label id="repsField"><span id="repsLabel">Repetições</span><input id="reps" type="number" min="1"></label>
       </div>
       <button class="big red" onclick="completeSet()">CONCLUIR SÉRIE</button>
+      <button id="skipSetBtn" class="big skip-set-btn" style="display:none" onclick="skipCurrentSet()">PULAR SÉRIE</button>
        <button id="nextExerciseBtn" class="big next-ex" style="display:none" onclick="nextPlanExercise()">PRÓXIMO EXERCÍCIO</button>
     </div>
     <div class="card timer">
@@ -246,7 +247,7 @@
   </section>
 
   <section id="history" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Histórico</h2></div>
+    <div class="bar"><button onclick="showView('tools')">←</button><h2>Histórico</h2></div>
     <div id="historyList"></div>
     <div id="historyDetail" style="display:none"></div>
   </section>
@@ -297,12 +298,10 @@
       </div>
     </div>
     <div class="card"><h3>Meu perfil</h3><p>Veja sua ficha operacional e estatísticas de treino.</p><button onclick="openV55Profile()">ABRIR MEU PERFIL</button></div>
-    <div class="card"><h3>🏆 Ranking 2ª CIA</h3><p>Ranking mensal por constância de treino.</p><button onclick="openV55Ranking()">VER RANKING</button></div>
-
-    <div class="card taf-entry-card">
-      <h3>🔥 Meu TAF</h3>
-      <p>Registre seus índices, acompanhe sua pontuação e projete metas de corrida e natação.</p>
-      <button onclick="openTAF()">ABRIR MEU TAF</button>
+    <div class="card">
+      <h3>▣ Histórico</h3>
+      <p>Consulte seus treinos concluídos e os registros realizados no Meu TAF.</p>
+      <button onclick="showView('history');renderHistory()">ABRIR HISTÓRICO</button>
     </div>
     <div id="adminEntryCard" class="card admin-entry-card" style="display:none">
       <h3>Administração da unidade</h3>
@@ -316,11 +315,11 @@
   </section>
 
   <section id="taf" class="view">
-    <div class="bar"><button onclick="showView('tools')">←</button><h2>Meu TAF</h2></div>
+    <div class="bar"><button onclick="showView('home')">←</button><h2>Meu TAF</h2></div>
     <div id="tafContent"></div>
   </section>
   <section id="v55Profile" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
-  <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Ranking 2ª CIA</h2></div><div id="v55RankingContent"></div></section>
+  <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking de Frequência</h2></div><div id="v55RankingContent"></div></section>
   <section id="admin" class="view">
     <div class="bar"><button onclick="showView('tools')">←</button><h2>Administração</h2></div>
 
@@ -407,9 +406,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=66.1"></script>
+<script src="cloud-config.js?v=66.2"></script>
 <script src="data.js"></script>
-<script src="app-v66-1.js?v=66.1"></script>
-<div id="buildVersion" style="display:none">v66.1</div>
+<script src="app-v66-2.js?v=66.2"></script>
+<div id="buildVersion" style="display:none">v66.2</div>
 </body>
 </html>
