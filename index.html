@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v64-1.css?v=64.1">
+<link rel="stylesheet" href="styles-v65.css?v=65.0">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -256,6 +256,12 @@
     </div>
     <div class="card"><h3>Meu perfil</h3><p>Veja sua ficha operacional e estatísticas de treino.</p><button onclick="openV55Profile()">ABRIR MEU PERFIL</button></div>
     <div class="card"><h3>🏆 Ranking 2ª CIA</h3><p>Ranking mensal por constância de treino.</p><button onclick="openV55Ranking()">VER RANKING</button></div>
+
+    <div class="card taf-entry-card">
+      <h3>🔥 Meu TAF</h3>
+      <p>Registre seus índices, acompanhe sua pontuação e projete metas de corrida e natação.</p>
+      <button onclick="openTAF()">ABRIR MEU TAF</button>
+    </div>
     <div id="adminEntryCard" class="card admin-entry-card" style="display:none">
       <h3>Administração da unidade</h3>
       <p>Cadastre, consulte, ative ou desative o acesso dos militares.</p>
@@ -265,6 +271,11 @@
       <h3>Limpar dados locais</h3>
       <button onclick="clearData()">Apagar histórico</button>
     </div>
+  </section>
+
+  <section id="taf" class="view">
+    <div class="bar"><button onclick="showView('tools')">←</button><h2>Meu TAF</h2></div>
+    <div id="tafContent"></div>
   </section>
   <section id="v55Profile" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
   <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Ranking 2ª CIA</h2></div><div id="v55RankingContent"></div></section>
@@ -354,9 +365,9 @@
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=64.1"></script>
+<script src="cloud-config.js?v=65.0"></script>
 <script src="data.js"></script>
-<script src="app-v64-1.js?v=64.1"></script>
-<div id="buildVersion" style="display:none">v64.1</div>
+<script src="app-v65.js?v=65.0"></script>
+<div id="buildVersion" style="display:none">v65.0</div>
 </body>
 </html>
