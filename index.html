@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v66-8.css?v=66.8">
+<link rel="stylesheet" href="styles-v66-9.css?v=66.9">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -79,9 +79,7 @@
       <button class="feature-card" onclick="showView('stretch');renderStretch()">
         <span class="feature-icon">⌁</span><span><b>MOBILIDADE & RECUPERAÇÃO</b><small>Prepare, movimente e recupere</small></span><span class="chev">›</span>
       </button>
-      <button class="feature-card" onclick="showView('tools')">
-        <span class="feature-icon">⚙</span><span><b>FERRAMENTAS</b><small>Backup, QR e extras</small></span><span class="chev">›</span>
-      </button>
+      
       <button class="feature-card future-feature-card" type="button" disabled aria-disabled="true">
         <span class="feature-icon">＋</span><span><b>PRÓXIMA INOVAÇÃO</b><small>Espaço reservado • em breve</small></span><span class="chev">•</span>
       </button>
@@ -403,15 +401,15 @@
 </main>
 
 <nav>
-  <button onclick="showView('home')">⌂<small>Início</small></button>
+  <button onclick="openTools()">⌂<small>Início</small></button>
   <button onclick="openWorkoutChooser()">▶<small>Treinos</small></button>
-  <button onclick="openGroups()">▦<small>Exercícios</small></button>
+  <button onclick="openGroups()">⚙<small>Ferramentas</small></button>
   <button onclick="showView('progress');renderProgress()">↗<small>Evolução</small></button>
 </nav>
 
-<script src="cloud-config.js?v=66.8"></script>
+<script src="cloud-config.js?v=66.9"></script>
 <script src="data.js"></script>
-<script src="app-v66-8.js?v=66.8"></script>
-<div id="buildVersion" style="display:none">v66.8</div>
+<script src="app-v66-9.js?v=66.9"></script>
+<div id="buildVersion" style="display:none">v66.9</div>
 </body>
 </html>
