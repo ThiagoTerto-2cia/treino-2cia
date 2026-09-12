@@ -1,169 +1,77 @@
-const CACHE='t2cia-v67.18';
-const SHELL=['./','index.html','styles-v67-18.css','data.js','app.js','app-v16.js','app-v17.js','app-v18.js','app-v19.js','app-v20.js','app-v21.js','app-v22.js','app-v23.js','app-v24.js','app-v25.js','app-v26.js','app-v27.js','app-v28.js','app-v29.js','app-v30.js','app-v31.js','app-v32.js','app-v33.js','app-v34.js','app-v35.js','app-v36.js','app-v37.js','app-v67-18.js','cloud-config.js','manifest.json','icon-192.png','icon-512.png','qrcodes.html','assets/exercises/1-inicio.webp','assets/exercises/1-fim.webp','assets/exercises/supino-inclinado-inicio.webp','assets/exercises/supino-inclinado-fim.webp','assets/exercises/crucifixo-halteres-inicio.webp','assets/exercises/crucifixo-halteres-fim.webp','assets/exercises/crossover-medio-inicio.webp','assets/exercises/crossover-medio-fim.webp','assets/exercises/triceps-corda-inicio.webp','assets/exercises/triceps-corda-fim.webp','assets/exercises/triceps-testa-inicio.webp','assets/exercises/triceps-testa-fim.webp','assets/exercises/puxada-frontal-inicio.webp','assets/exercises/puxada-frontal-fim.webp','assets/exercises/remada-baixa-inicio.webp','assets/exercises/remada-baixa-fim.webp','assets/exercises/remada-curvada-inicio.webp','assets/exercises/remada-curvada-fim.webp','assets/exercises/levantamento-terra-inicio.webp','assets/exercises/levantamento-terra-fim.webp','assets/exercises/barra-fixa-inicio.webp','assets/exercises/barra-fixa-fim.webp','assets/exercises/remada-unilateral-inicio.webp','assets/exercises/remada-unilateral-fim.webp','assets/exercises/rosca-direta-inicio.webp','assets/exercises/rosca-direta-fim.webp','assets/exercises/rosca-alternada-inicio.webp','assets/exercises/rosca-alternada-fim.webp','assets/exercises/rosca-martelo-inicio.webp','assets/exercises/rosca-martelo-fim.webp','assets/exercises/rosca-concentrada-inicio.webp','assets/exercises/rosca-concentrada-fim.webp','assets/exercises/pullover-polia-inicio.webp','assets/exercises/pullover-polia-fim.webp','assets/exercises/rosca-scott-inicio.webp','assets/exercises/rosca-scott-fim.webp','assets/exercises/rosca-direta-inicio.webp','assets/exercises/rosca-direta-fim.webp','assets/exercises/agachamento-livre-inicio.webp','assets/exercises/agachamento-livre-fim.webp','assets/exercises/leg-press-inicio.webp','assets/exercises/leg-press-fim.webp','assets/exercises/cadeira-extensora-inicio.webp','assets/exercises/cadeira-extensora-fim.webp','assets/exercises/cadeira-flexora-inicio.webp','assets/exercises/cadeira-flexora-fim.webp','assets/exercises/avanco-inicio.webp','assets/exercises/avanco-fim.webp','assets/exercises/stiff-inicio.webp','assets/exercises/stiff-fim.webp','assets/exercises/cadeira-adutora-inicio.webp','assets/exercises/cadeira-adutora-fim.webp','assets/exercises/cadeira-abdutora-inicio.webp','assets/exercises/cadeira-abdutora-fim.webp','assets/exercises/panturrilha-em-pe-inicio.webp','assets/exercises/panturrilha-em-pe-fim.webp','assets/exercises/panturrilha-sentado-inicio.webp','assets/exercises/panturrilha-sentado-fim.webp','assets/exercises/desenvolvimento-barra-inicio.webp','assets/exercises/desenvolvimento-barra-fim.webp','assets/exercises/desenvolvimento-halteres-inicio.webp','assets/exercises/desenvolvimento-halteres-fim.webp','assets/exercises/elevacao-lateral-inicio.webp','assets/exercises/elevacao-lateral-fim.webp','assets/exercises/elevacao-frontal-inicio.webp','assets/exercises/elevacao-frontal-fim.webp','assets/exercises/crucifixo-invertido-inicio.webp','assets/exercises/crucifixo-invertido-fim.webp','assets/exercises/encolhimento-inicio.webp','assets/exercises/encolhimento-fim.webp','assets/exercises/face-pull-inicio.webp','assets/exercises/face-pull-fim.webp','assets/exercises/elevacao-lateral-cabo-inicio.webp','assets/exercises/elevacao-lateral-cabo-fim.webp','assets/exercises/prancha-frontal-inicio.webp','assets/exercises/prancha-frontal-fim.webp','assets/exercises/elevacao-pernas-inicio.webp','assets/exercises/elevacao-pernas-fim.webp','assets/exercises/abdominal-maquina-inicio.webp','assets/exercises/abdominal-maquina-fim.webp','assets/exercises/prancha-lateral-inicio.webp','assets/exercises/prancha-lateral-fim.webp','assets/exercises/triceps-frances-inicio.webp','assets/exercises/triceps-frances-fim.webp',
-  'assets/mobility/quadril/90-90-a.webp',
-  'assets/mobility/quadril/90-90-b.webp',
-  'assets/mobility/quadril/afundo-a.webp',
-  'assets/mobility/quadril/afundo-b.webp',
-  'assets/mobility/quadril/agachamento-a.webp',
-  'assets/mobility/quadril/agachamento-b.webp',
-  'assets/mobility/quadril/ponte-a.webp',
-  'assets/mobility/quadril/ponte-b.webp',
-  'assets/mobility/quadril/rotacao-quadril-a.webp',
-  'assets/mobility/quadril/rotacao-quadril-b.webp',
-  'assets/mobility/quadril/gluteo-a.webp',
-  'assets/mobility/quadril/gluteo-b.webp',
-  'assets/mobility/ombros/bastao-a.webp',
-  'assets/mobility/ombros/bastao-b.webp',
-  'assets/mobility/ombros/circulos-a.webp',
-  'assets/mobility/ombros/circulos-b.webp',
-  'assets/mobility/ombros/escapular-a.webp',
-  'assets/mobility/ombros/escapular-b.webp',
-  'assets/mobility/ombros/peitoral-a.webp',
-  'assets/mobility/ombros/peitoral-b.webp',
-  'assets/mobility/ombros/rotacao-externa-a.webp',
-  'assets/mobility/ombros/rotacao-externa-b.webp',
-  'assets/mobility/ombros/rotacao-interna-a.webp',
-  'assets/mobility/ombros/rotacao-interna-b.webp',
-  'assets/mobility/ombros/wall-slide-a.webp',
-  'assets/mobility/ombros/wall-slide-b.webp',
-  'assets/mobility/coluna-lombar/alongamento-lateral-a.webp',
-  'assets/mobility/coluna-lombar/alongamento-lateral-b.webp',
-  'assets/mobility/coluna-lombar/crianca-a.webp',
-  'assets/mobility/coluna-lombar/crianca-b.webp',
-  'assets/mobility/coluna-lombar/extensao-tronco-a.webp',
-  'assets/mobility/coluna-lombar/extensao-tronco-b.webp',
-  'assets/mobility/coluna-lombar/gato-vaca-a.webp',
-  'assets/mobility/coluna-lombar/gato-vaca-b.webp',
-  'assets/mobility/coluna-lombar/rotacao-lombar-a.webp',
-  'assets/mobility/coluna-lombar/rotacao-lombar-b.webp',
-  'assets/mobility/coluna-lombar/rotacao-toracica-a.webp',
-  'assets/mobility/coluna-lombar/rotacao-toracica-b.webp',
-  'assets/mobility/joelhos/agachamento-parcial-a.webp',
-  'assets/mobility/joelhos/agachamento-parcial-b.webp',
-  'assets/mobility/joelhos/flexao-extensao-a.webp',
-  'assets/mobility/joelhos/flexao-extensao-b.webp',
-  'assets/mobility/joelhos/isometria-parede-a.webp',
-  'assets/mobility/joelhos/isometria-parede-b.webp',
-  'assets/mobility/joelhos/panturrilha-a.webp',
-  'assets/mobility/joelhos/panturrilha-b.webp',
-  'assets/mobility/joelhos/passada-reversa-a.webp',
-  'assets/mobility/joelhos/passada-reversa-b.webp',
-  'assets/mobility/tornozelos/circulos-a.webp',
-  'assets/mobility/tornozelos/circulos-b.webp',
-  'assets/mobility/tornozelos/joelho-parede-a.webp',
-  'assets/mobility/tornozelos/joelho-parede-b.webp',
-  'assets/mobility/tornozelos/panturrilha-a.webp',
-  'assets/mobility/tornozelos/panturrilha-b.webp',
-  'assets/mobility/tornozelos/ponta-pe-a.webp',
-  'assets/mobility/tornozelos/ponta-pe-b.webp',
-  'assets/mobility/tornozelos/transferencia-a.webp',
-  'assets/mobility/tornozelos/transferencia-b.webp',
-  'assets/mobility/tornozelos/alongamento-panturrilha-a.webp',
-  'assets/mobility/tornozelos/alongamento-panturrilha-b.webp',
-  'assets/mobility/tornozelos/inversao-eversao-a.webp',
-  'assets/mobility/tornozelos/inversao-eversao-b.webp',
-  'assets/mobility/corpo-inteiro/agachamento-alcance-a.webp',
-  'assets/mobility/corpo-inteiro/agachamento-alcance-b.webp',
-  'assets/mobility/corpo-inteiro/alongamento-y-a.webp',
-  'assets/mobility/corpo-inteiro/alongamento-y-b.webp',
-  'assets/mobility/corpo-inteiro/avanco-rotacao-a.webp',
-  'assets/mobility/corpo-inteiro/avanco-rotacao-b.webp',
-  'assets/mobility/corpo-inteiro/passada-lateral-a.webp',
-  'assets/mobility/corpo-inteiro/passada-lateral-b.webp',
-  'assets/mobility/corpo-inteiro/prancha-alcance-a.webp',
-  'assets/mobility/corpo-inteiro/prancha-alcance-b.webp',
-  'assets/mobility/corpo-inteiro/quadril-em-pe-a.webp',
-  'assets/mobility/corpo-inteiro/quadril-em-pe-b.webp',
-  'assets/mobility/corpo-inteiro/respiracao-global-a.webp',
-  'assets/mobility/corpo-inteiro/respiracao-global-b.webp',
-  'assets/mobility/corpo-inteiro/rotacao-coluna-a.webp',
-  'assets/mobility/corpo-inteiro/rotacao-coluna-b.webp',
-  'assets/mobility/corpo-inteiro/toque-pe-a.webp',
-  'assets/mobility/corpo-inteiro/toque-pe-b.webp',
-  'assets/mobility/ombros/alongamento-ombro-a.webp',
-  'assets/mobility/ombros/alongamento-ombro-b.webp',
-  'assets/mobility/ombros/desenvolvimento-a.webp',
-  'assets/mobility/ombros/desenvolvimento-b.webp',
-  'assets/mobility/ombros/elevacao-frontal-a.webp',
-  'assets/mobility/ombros/elevacao-frontal-b.webp',
-  'assets/mobility/ombros/elevacao-lateral-a.webp',
-  'assets/mobility/ombros/elevacao-lateral-b.webp',
-  'assets/mobility/ombros/toracica-quadrupedia-a.webp',
-  'assets/mobility/ombros/toracica-quadrupedia-b.webp'
-,'assets/core-operacional/v67-8-hd/pallof_press_direita.webp','assets/core-operacional/v67-8-hd/pallof_press_esquerda.webp','assets/core-operacional/v67-8-hd/front_rack_hold.webp','assets/core-operacional/v67-8-hd/front_squat.webp','assets/core-operacional/v67-8-hd/step_up_carga_frontal.webp','assets/core-operacional/v67-8-hd/step_up_unilateral_esquerda.webp','assets/core-operacional/v67-8-hd/remada_meio_ajoelhado_direita.webp','assets/core-operacional/v67-8-hd/remada_meio_ajoelhado_esquerda.webp','assets/core-operacional/v67-8-hd/suitcase_deadlift_direita.webp','assets/core-operacional/v67-8-hd/suitcase_deadlift_esquerda.webp','assets/core-operacional/v67-8-hd/farmer_hold_pesado.webp','assets/core-operacional/v67-8-hd/overhead_carry.webp','assets/core-operacional/v67-8-hd/battle_rope_alternada.webp','assets/core-operacional/v67-8-hd/battle_rope_slam.webp','assets/core-operacional/v67-8-hd/landmine_press_direita.webp','assets/core-operacional/v67-8-hd/landmine_press_esquerda.webp','assets/core-operacional/v67-8-hd/dead_bug_pulldown.webp','assets/core-operacional/v67-9-hd/01_pallof_press_direita.webp','assets/core-operacional/v67-9-hd/02_pallof_press_esquerda.webp','assets/core-operacional/v67-9-hd/03_marcha_front_rack.webp','assets/core-operacional/v67-9-hd/04_dead_bug_com_puxada.webp','assets/core-operacional/v67-9-hd/05_meio_ajoelhado_com_press.webp','assets/core-operacional/v67-9-hd/06_crawl_reverso.webp','assets/core-operacional/v67-9-hd/07_pallof_press.webp','assets/core-operacional/v67-9-hd/08_suitcase_carry.webp','assets/core-operacional/v67-9-hd/09_goblet_squat_com_pausa.webp','assets/core-operacional/v67-9-hd/10_front_rack_hold.webp','assets/core-operacional/v67-9-hd/11_suitcase_deadlift_direita.webp','assets/core-operacional/v67-9-hd/12_suitcase_deadlift_esquerda.webp','assets/core-operacional/v67-9-hd/13_overhead_carry.webp','assets/core-operacional/v67-9-hd/14_remada_unilateral_meio_ajoelhado_direita.webp','assets/core-operacional/v67-9-hd/15_remada_unilateral_meio_ajoelhado_esquerda.webp','assets/core-operacional/v67-9-hd/16_battle_rope_alternada.webp','assets/core-operacional/v67-9-hd/17_battle_rope_slam.webp','assets/core-operacional/v67-9-hd/18_front_rack_carry.webp','assets/core-operacional/v67-9-hd/19_step_up_com_carga_frontal.webp','assets/core-operacional/v67-9-hd/20_step_up_com_farmer_carry.webp','assets/core-operacional/v67-9-hd/21_step_up_unilateral_carga_direita.webp','assets/core-operacional/v67-9-hd/22_step_up_unilateral_carga_esquerda.webp','assets/core-operacional/v67-9-hd/23_farmer_hold_pesado.webp','assets/core-operacional/v67-9-hd/24_front_squat.webp','assets/core-operacional/v67-9-hd/25_pallof_press_pesado_direita.webp','assets/core-operacional/v67-9-hd/26_pallof_press_pesado_esquerda.webp','assets/core-operacional/v67-9-hd/27_landmine_press_meio_ajoelhado_direita.webp','assets/core-operacional/v67-9-hd/28_landmine_press_meio_ajoelhado_esquerda.webp','assets/core-operacional/v67-9-hd/29_dead_bug_com_pulldown.webp','assets/service/qr-validacao-servico.png'];
+const CACHE='t2cia-v67.19';
+const RUNTIME='t2cia-runtime-v67.19';
+const SHELL=[
+  './',
+  'index.html',
+  'styles-v67-19.css',
+  'app-v67-19.js',
+  'data.js',
+  'cloud-config.js',
+  'manifest.json'
+];
 
 self.addEventListener('install',event=>{
-  event.waitUntil(
-    caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())
-  );
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    await Promise.all(SHELL.map(async url=>{
+      try{await cache.add(url)}catch(e){console.warn('Falha ao pré-cachear',url,e)}
+    }));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate',event=>{
-  event.waitUntil(
-    caches.keys()
-      .then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-      .then(()=>self.clients.claim())
-  );
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(k=>k!==CACHE&&k!==RUNTIME).map(k=>caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
+
+function isAppShell(url){
+  return url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/app-v67-19.js') ||
+    url.pathname.endsWith('/styles-v67-19.css') ||
+    url.pathname.endsWith('/data.js') ||
+    url.pathname.endsWith('/cloud-config.js') ||
+    url.pathname.endsWith('/manifest.json');
+}
 
 self.addEventListener('fetch',event=>{
   const req=event.request;
-  if(req.method!=='GET') return;
-
+  if(req.method!=='GET')return;
   const url=new URL(req.url);
-  const isAppFile =
-    url.pathname.endsWith('/app.js') ||
-    url.pathname.endsWith('/app-v16.js') ||
-    url.pathname.endsWith('/app-v17.js') ||
-    url.pathname.endsWith('/app-v18.js') ||
-    url.pathname.endsWith('/app-v19.js') ||
-    url.pathname.endsWith('/app-v20.js') ||
-    url.pathname.endsWith('/app-v21.js') ||
-    url.pathname.endsWith('/app-v22.js') ||
-    url.pathname.endsWith('/app-v23.js') ||
-    url.pathname.endsWith('/app-v24.js') ||
-    url.pathname.endsWith('/app-v25.js') ||
-    url.pathname.endsWith('/app-v26.js') ||
-    url.pathname.endsWith('/app-v27.js') ||
-    url.pathname.endsWith('/app-v28.js') ||
-    url.pathname.endsWith('/app-v29.js') ||
-    url.pathname.endsWith('/app-v30.js') ||
-    url.pathname.endsWith('/app-v31.js') ||
-    url.pathname.endsWith('/app-v32.js') ||
-    url.pathname.endsWith('/app-v33.js') ||
-    url.pathname.endsWith('/app-v34.js') ||
-    url.pathname.endsWith('/app-v35.js') ||
-    url.pathname.endsWith('/app-v36.js') ||
-    url.pathname.endsWith('/app-v37.js') ||
-    url.pathname.endsWith('/app-v67-18.js') ||
-    url.pathname.endsWith('/cloud-config.js') ||
-    url.pathname.endsWith('/data.js') ||
-    url.pathname.endsWith('/index.html') ||
-    url.pathname.endsWith('/styles-v67-18.css') ||
-    url.pathname.endsWith('/manifest.json') ||
-    url.pathname.endsWith('/');
+  if(url.origin!==self.location.origin)return;
 
-  if(isAppFile){
-    event.respondWith(
-      fetch(req)
-        .then(res=>{
-          const copy=res.clone();
-          caches.open(CACHE).then(cache=>cache.put(req,copy));
-          return res;
-        })
-        .catch(()=>caches.match(req).then(r=>r||caches.match('index.html')))
-    );
+  if(isAppShell(url)){
+    event.respondWith((async()=>{
+      try{
+        const fresh=await fetch(req,{cache:'no-store'});
+        if(fresh&&fresh.ok){
+          const cache=await caches.open(CACHE);
+          cache.put(req,fresh.clone()).catch(()=>{});
+        }
+        return fresh;
+      }catch(e){
+        return (await caches.match(req)) || (await caches.match('index.html')) || Response.error();
+      }
+    })());
     return;
   }
 
-  event.respondWith(
-    caches.match(req).then(cached=>{
-      if(cached) return cached;
-      return fetch(req).then(res=>{
-        const copy=res.clone();
-        caches.open(CACHE).then(cache=>cache.put(req,copy));
-        return res;
-      });
-    })
-  );
+  event.respondWith((async()=>{
+    const cached=await caches.match(req);
+    if(cached)return cached;
+    try{
+      const fresh=await fetch(req);
+      if(fresh&&fresh.ok){
+        const cache=await caches.open(RUNTIME);
+        cache.put(req,fresh.clone()).catch(()=>{});
+      }
+      return fresh;
+    }catch(e){
+      return Response.error();
+    }
+  })());
 });
