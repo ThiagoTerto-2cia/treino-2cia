@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-13.css?v=67.13">
+<link rel="stylesheet" href="styles-v67-14.css?v=67.14">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -370,6 +370,17 @@
           <img src="assets/service/qr-validacao-servico.png" alt="QR fixo de validação de serviço">
           <div><b>Imprima este QR uma única vez</b><small>Fixe-o em local controlado na academia. O QR não precisa ser trocado diariamente.</small></div>
         </div>
+
+        <div class="admin-service-validations-head">
+          <div>
+            <span class="eyebrow">PRESENÇAS VALIDADAS</span>
+            <h4>Militares com validação de serviço</h4>
+          </div>
+          <button type="button" class="admin-service-refresh" onclick="adminLoadServiceValidations()">ATUALIZAR</button>
+        </div>
+        <div id="adminServiceValidations" class="admin-service-validations">
+          <div class="admin-empty">Carregando validações…</div>
+        </div>
       </div>
 
       <div class="card">
@@ -450,7 +461,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-13.js?v=67.13"></script>
-<div id="buildVersion" style="display:none">v67.13</div>
+<script src="app-v67-14.js?v=67.14"></script>
+<div id="buildVersion" style="display:none">v67.14</div>
 </body>
 </html>
