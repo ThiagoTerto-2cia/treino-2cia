@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-11.css?v=67.11">
+<link rel="stylesheet" href="styles-v67-13.css?v=67.13">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -97,15 +97,15 @@
   <section id="workoutChooser" class="view">
     <div class="bar"><button onclick="showView('home')">←</button><h2>Iniciar treino</h2></div>
 
-    <div class="card service-day-card">
-      <span class="eyebrow">SITUAÇÃO DO DIA</span>
-      <h3>Você está de serviço hoje?</h3>
-      <p>Essa informação acompanha o treino. Somente treinos realizados em dia de serviço podem contar no Ranking de Frequência, desde que cumpram os critérios mínimos.</p>
-      <div class="service-toggle-grid">
-        <button id="serviceYes" class="service-choice" onclick="setWorkoutServiceDay(true)">🚒 SIM, ESTOU DE SERVIÇO</button>
-        <button id="serviceNo" class="service-choice" onclick="setWorkoutServiceDay(false)">🏠 NÃO ESTOU DE SERVIÇO</button>
+    <div id="serviceValidationCard" class="card service-validation-card pending">
+      <span class="eyebrow">SITUAÇÃO DO TREINO</span>
+      <h3 id="serviceValidationTitle">Verificando validação…</h3>
+      <p id="serviceValidationText">Escolha se este treino será durante serviço operacional ou fora dele.</p>
+      <div class="service-mode-grid">
+        <button id="serviceValidationOperational" class="service-mode-btn operational" type="button" onclick="chooseOperationalService()">🚒 VALIDAR SERVIÇO OPERACIONAL</button>
+        <button id="serviceValidationOff" class="service-mode-btn off" type="button" onclick="chooseOffDutyTraining()">🏠 NÃO ESTOU DE SERVIÇO OPERACIONAL</button>
       </div>
-      <small id="serviceChoiceHint">Selecione uma opção para continuar.</small>
+      <small id="serviceValidationHint">Somente o modo operacional validado pode gerar pontos no ranking.</small>
     </div>
 
     <div class="section-label">ESCOLHA O TIPO DE TREINO</div>
@@ -352,6 +352,26 @@
 
       <div id="adminMessage" class="admin-message"></div>
 
+      <div class="card admin-service-card">
+        <span class="eyebrow">VALIDAÇÃO DE SERVIÇO</span>
+        <h3>QR fixo da academia</h3>
+        <p>O QR é permanente. A localização da unidade é definida uma única vez pelo administrador e pode ser atualizada quando necessário.</p>
+        <div id="adminServiceConfigStatus" class="admin-service-status">Carregando configuração…</div>
+        <div class="admin-form-grid">
+          <label>Raio permitido (m)
+            <input id="adminServiceRadius" type="number" min="30" max="1000" value="150" inputmode="numeric">
+          </label>
+          <label>Validade da confirmação (h)
+            <input id="adminServiceHours" type="number" min="1" max="48" value="26" inputmode="numeric">
+          </label>
+        </div>
+        <button class="admin-primary" type="button" onclick="adminConfigureServiceLocation()">📍 DEFINIR LOCAL USANDO ESTE CELULAR</button>
+        <div class="service-qr-admin">
+          <img src="assets/service/qr-validacao-servico.png" alt="QR fixo de validação de serviço">
+          <div><b>Imprima este QR uma única vez</b><small>Fixe-o em local controlado na academia. O QR não precisa ser trocado diariamente.</small></div>
+        </div>
+      </div>
+
       <div class="card">
         <h3>Cadastrar militar</h3>
         <div class="admin-form-grid">
@@ -405,6 +425,22 @@
 
 </main>
 
+
+<div id="serviceQrModal" class="service-qr-modal" style="display:none" aria-hidden="true">
+  <div class="service-qr-sheet">
+    <div class="service-qr-head"><b>Validar serviço</b><button type="button" onclick="closeServiceValidationScanner()">✕</button></div>
+    <p>Leia o QR fixado na academia. Em seguida, o app verificará sua localização somente neste momento.</p>
+    <video id="serviceQrVideo" playsinline muted></video>
+    <div id="serviceQrScanStatus" class="service-qr-status">Preparando câmera…</div>
+    <button class="big" type="button" onclick="closeServiceValidationScanner()">CANCELAR</button>
+    <details class="service-qr-fallback"><summary>Câmera/QR não funcionou?</summary>
+      <p>Use outro leitor de QR para visualizar o conteúdo e cole o código abaixo. A localização continua obrigatória.</p>
+      <input id="serviceQrManual" autocomplete="off" placeholder="Cole o conteúdo do QR">
+      <button class="big red" type="button" onclick="submitManualServiceQr()">VALIDAR CÓDIGO</button>
+    </details>
+  </div>
+</div>
+
 <nav>
   <button type="button" onclick="footerGoHome()">⌂<small>Início</small></button>
   <button type="button" onclick="openWorkoutChooser()">▶<small>Treinos</small></button>
@@ -414,7 +450,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-11.js?v=67.11"></script>
-<div id="buildVersion" style="display:none">v67.7</div>
+<script src="app-v67-13.js?v=67.13"></script>
+<div id="buildVersion" style="display:none">v67.13</div>
 </body>
 </html>
