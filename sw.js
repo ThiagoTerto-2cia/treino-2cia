@@ -1,10 +1,10 @@
-const CACHE='t2cia-v67.32';
-const RUNTIME='t2cia-runtime-v67.32';
+const CACHE='t2cia-v67.33';
+const RUNTIME='t2cia-runtime-v67.33';
 const SHELL=[
   './',
   'index.html',
-  'styles-v67-32.css',
-  'app-v67-32.js',
+  'styles-v67-33.css',
+  'app-v67-33.js',
   'data.js',
   'cloud-config.js',
   'manifest.json'
@@ -31,8 +31,8 @@ self.addEventListener('activate',event=>{
 function isAppShell(url){
   return url.pathname.endsWith('/') ||
     url.pathname.endsWith('/index.html') ||
-    url.pathname.endsWith('/app-v67-32.js') ||
-    url.pathname.endsWith('/styles-v67-32.css') ||
+    url.pathname.endsWith('/app-v67-33.js') ||
+    url.pathname.endsWith('/styles-v67-33.css') ||
     url.pathname.endsWith('/data.js') ||
     url.pathname.endsWith('/cloud-config.js') ||
     url.pathname.endsWith('/manifest.json');

@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-32.css?v=67.32">
+<link rel="stylesheet" href="styles-v67-33.css?v=67.33">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -125,6 +125,42 @@
         <span class="workout-type-icon">🧩</span><b>TREINO PERSONALIZADO</b>
         <small>Monte ou escolha seu treino com exercícios da biblioteca</small>
       </button>
+      <button class="workout-type-card cardio-type-card" onclick="openCardioWorkout()">
+        <span class="workout-type-icon">❤️</span><b>CARDIO</b>
+        <small>Esteira, bicicleta ergométrica ou simulador de remo</small>
+      </button>
+    </div>
+  </section>
+
+  <section id="cardioWorkout" class="view">
+    <div class="bar"><button onclick="appBack('workoutChooser',openWorkoutChooser)">←</button><h2>Cardio</h2></div>
+    <div class="card cardio-intro-card">
+      <span class="eyebrow">CARDIO DA ACADEMIA</span>
+      <h3>Escolha o equipamento</h3>
+      <p>Para gerar ponto no Ranking de Frequência, a atividade precisa ter pelo menos <b>30 minutos</b> e ser realizada durante uma validação de serviço ativa.</p>
+      <div class="cardio-machine-grid">
+        <button type="button" class="cardio-machine" data-cardio="treadmill" onclick="selectCardioMachine('treadmill')"><span>🏃</span><b>ESTEIRA</b><small>Tempo, distância e calorias</small></button>
+        <button type="button" class="cardio-machine" data-cardio="bike" onclick="selectCardioMachine('bike')"><span>🚴</span><b>BICICLETA</b><small>Tempo</small></button>
+        <button type="button" class="cardio-machine" data-cardio="rower" onclick="selectCardioMachine('rower')"><span>🚣</span><b>SIMULADOR DE REMO</b><small>Tempo</small></button>
+      </div>
+    </div>
+    <div id="cardioFormCard" class="card cardio-form-card" style="display:none">
+      <span class="eyebrow" id="cardioFormEyebrow">REGISTRO DE CARDIO</span>
+      <h3 id="cardioFormTitle">Atividade</h3>
+      <label>Tempo (minutos)
+        <input id="cardioMinutes" type="number" min="1" max="600" inputmode="numeric" placeholder="Ex.: 30">
+      </label>
+      <div id="cardioTreadmillFields" style="display:none">
+        <label>Distância (km)
+          <input id="cardioDistance" type="number" min="0.1" step="0.01" inputmode="decimal" placeholder="Ex.: 5,00">
+        </label>
+        <label>Calorias
+          <input id="cardioCalories" type="number" min="1" step="1" inputmode="numeric" placeholder="Ex.: 320">
+        </label>
+      </div>
+      <div id="cardioRankingHint" class="cardio-ranking-hint">Mínimo de 30 minutos para pontuar.</div>
+      <div id="cardioSavedMessage" class="free-workout-saved-message" role="status" aria-live="assertive" style="display:none">✓ Cardio salvo.</div>
+      <button id="saveCardioWorkoutBtn" class="big red" type="button" onclick="saveCardioWorkout()">SALVAR CARDIO</button>
     </div>
   </section>
 
@@ -480,7 +516,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-32.js?v=67.32"></script>
-<div id="buildVersion" style="display:none">v67.32</div>
+<script src="app-v67-33.js?v=67.33"></script>
+<div id="buildVersion" style="display:none">v67.33</div>
 </body>
 </html>
