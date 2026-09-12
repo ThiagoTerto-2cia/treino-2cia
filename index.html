@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-19.css?v=67.19">
+<link rel="stylesheet" href="styles-v67-20.css?v=67.20">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -75,6 +75,9 @@
       </button>
       <button class="feature-card ranking-home-card" onclick="openV55Ranking()">
         <span class="feature-icon">🏆</span><span><b>RANKING DE FREQUÊNCIA</b><small>Treinos válidos realizados em dias de serviço</small></span><span class="chev">›</span>
+      </button>
+      <button class="feature-card official-taf-home-card" onclick="openOfficialTafRanking()">
+        <span class="feature-icon">🎖️</span><span><b>RANKING OFICIAL TAF</b><small>Índices oficiais • classificação da tropa</small></span><span class="chev">›</span>
       </button>
       <button class="feature-card" onclick="showView('stretch');renderStretch()">
         <span class="feature-icon">⌁</span><span><b>MOBILIDADE & RECUPERAÇÃO</b><small>Prepare, movimente e recupere</small></span><span class="chev">›</span>
@@ -326,6 +329,7 @@
   </section>
   <section id="v55Profile" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
   <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking de Frequência</h2></div><div id="v55RankingContent"></div></section>
+  <section id="officialTafRanking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking Oficial TAF</h2></div><div id="officialTafRankingContent"></div></section>
   <section id="admin" class="view">
     <div class="bar"><button onclick="showView('tools')">←</button><h2>Administração</h2></div>
 
@@ -381,6 +385,18 @@
         <div id="adminServiceValidations" class="admin-service-validations">
           <div class="admin-empty">Carregando validações…</div>
         </div>
+      </div>
+
+      <div class="card official-taf-admin-card">
+        <span class="eyebrow">TAF OFICIAL</span>
+        <h3>Alimentar Ranking Oficial TAF</h3>
+        <p>Cadastre e atualize os índices oficiais de cada edição. Somente administradores podem alterar estes dados.</p>
+        <div class="official-taf-admin-top">
+          <label>Edição<select id="officialTafAdminEdition" onchange="officialTafAdminLoad()"></select></label>
+          <button type="button" class="admin-service-refresh" onclick="officialTafAdminNewEdition()">+ NOVA EDIÇÃO</button>
+        </div>
+        <div id="officialTafAdminStatus" class="admin-message"></div>
+        <div id="officialTafAdminList"><div class="admin-loading">Carregando TAF oficial…</div></div>
       </div>
 
       <div class="card">
@@ -461,7 +477,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-19.js?v=67.19"></script>
+<script src="app-v67-20.js?v=67.20"></script>
 <div id="buildVersion" style="display:none">v67.19</div>
 </body>
 </html>
