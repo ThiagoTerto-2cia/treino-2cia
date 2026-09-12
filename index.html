@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-25.css?v=67.25">
+<link rel="stylesheet" href="styles-v67-26.css?v=67.26">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -92,13 +92,13 @@
   </section>
 
   <section id="groups" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Grupos musculares</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Grupos musculares</h2></div>
     <div id="groupGrid" class="stack"></div>
   </section>
 
   
   <section id="workoutChooser" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Iniciar treino</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Iniciar treino</h2></div>
 
     <div id="serviceValidationCard" class="card service-validation-card pending">
       <span class="eyebrow">SITUAÇÃO DO TREINO</span>
@@ -129,7 +129,7 @@
   </section>
 
   <section id="freeWorkout" class="view">
-    <div class="bar"><button onclick="openWorkoutChooser()">←</button><h2>Treino livre</h2></div>
+    <div class="bar"><button onclick="appBack('workoutChooser',openWorkoutChooser)">←</button><h2>Treino livre</h2></div>
     <div class="card">
       <span class="eyebrow">GRUPOS MUSCULARES</span>
       <h3>O que você treinou?</h3>
@@ -148,7 +148,7 @@
   </section>
 
 <section id="plans" class="view">
-    <div class="bar"><button onclick="openWorkoutChooser()">←</button><h2 id="plansModeTitle">Treinos</h2></div>
+    <div class="bar"><button onclick="appBack('workoutChooser',openWorkoutChooser)">←</button><h2 id="plansModeTitle">Treinos</h2></div>
 
     <button class="build-workout-cta" onclick="openCustomBuilder()">
       <span class="build-workout-icon">＋</span>
@@ -167,7 +167,7 @@
   </section>
 
   <section id="customBuilder" class="view">
-    <div class="bar"><button onclick="openPlans('custom')">←</button><h2 id="customBuilderTitle">Montar meu treino</h2></div>
+    <div class="bar"><button onclick="appBack('plans',()=>openPlans('custom'))">←</button><h2 id="customBuilderTitle">Montar meu treino</h2></div>
 
     <div class="card builder-name-card">
       <label class="builder-name-label">Nome do treino
@@ -198,7 +198,7 @@
   </section>
 
   <section id="list" class="view">
-    <div class="bar"><button onclick="goListBack()">←</button><h2 id="listTitle"></h2></div>
+    <div class="bar"><button onclick="appBack('plans',goListBack)">←</button><h2 id="listTitle"></h2></div>
     <div id="planStartBox" class="plan-start-box"></div><div id="exerciseList" class="stack"></div>
   </section>
 
@@ -206,7 +206,7 @@
     <div id="workoutProgress" class="workout-progress" style="display:none">
       <span id="workoutPlanLabel"></span><b id="workoutStepLabel"></b>
     </div>
-    <div class="bar"><button onclick="showView('list')">←</button><h2 id="exTitle"></h2></div>
+    <div class="bar"><button onclick="appBack('list')">←</button><h2 id="exTitle"></h2></div>
     <div class="visual">
       <div class="imgbox"><span>1</span><img id="imgStart" alt="Posição inicial"><b>POSIÇÃO INICIAL</b></div>
       <div class="imgbox"><span>2</span><img id="imgEnd" alt="Posição final"><b>POSIÇÃO FINAL</b></div>
@@ -251,13 +251,13 @@
   </section>
 
   <section id="history" class="view">
-    <div class="bar"><button onclick="showView('tools')">←</button><h2>Histórico</h2></div>
+    <div class="bar"><button onclick="appBack('tools')">←</button><h2>Histórico</h2></div>
     <div id="historyList"></div>
     <div id="historyDetail" style="display:none"></div>
   </section>
 
   <section id="progress" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Evolução</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Evolução</h2></div>
     <div id="progressSummary" class="stats"></div>
     <div id="dataQuality"></div>
     <div class="card"><h3>Treinos por período</h3><div id="periodStats"></div></div>
@@ -272,17 +272,17 @@
   </section>
 
   <section id="stretch" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Mobilidade & Recuperação</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Mobilidade & Recuperação</h2></div>
     <div id="stretchList" class="stack"></div>
   </section>
 
   <section id="coreOperational" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Core Operacional</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Core Operacional</h2></div>
     <div id="coreOperationalList" class="stack"></div>
   </section>
 
   <section id="tools" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Ferramentas</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Ferramentas</h2></div>
     <div class="card">
       <h3>Backup do histórico</h3>
       <p>Exporte seus registros para não perder as cargas ao trocar de celular.</p>
@@ -324,14 +324,14 @@
   </section>
 
   <section id="taf" class="view">
-    <div class="bar"><button onclick="showView('home')">←</button><h2>Meu TAF</h2></div>
+    <div class="bar"><button onclick="appBack('home')">←</button><h2>Meu TAF</h2></div>
     <div id="tafContent"></div>
   </section>
-  <section id="v55Profile" class="view"><div class="bar"><button onclick="showView('tools')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
-  <section id="v55Ranking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking de Frequência</h2></div><div id="v55RankingContent"></div></section>
-  <section id="officialTafRanking" class="view"><div class="bar"><button onclick="showView('home')">←</button><h2>Ranking Oficial TAF</h2></div><div id="officialTafRankingContent"></div></section>
+  <section id="v55Profile" class="view"><div class="bar"><button onclick="appBack('tools')">←</button><h2>Meu Perfil</h2></div><div id="v55ProfileContent"></div></section>
+  <section id="v55Ranking" class="view"><div class="bar"><button onclick="appBack('home')">←</button><h2>Ranking de Frequência</h2></div><div id="v55RankingContent"></div></section>
+  <section id="officialTafRanking" class="view"><div class="bar"><button onclick="appBack('home')">←</button><h2>Ranking Oficial TAF</h2></div><div id="officialTafRankingContent"></div></section>
   <section id="admin" class="view">
-    <div class="bar"><button onclick="showView('tools')">←</button><h2>Administração</h2></div>
+    <div class="bar"><button onclick="appBack('tools')">←</button><h2>Administração</h2></div>
 
     <div id="adminLoginBox" class="card admin-login-card">
       <div class="admin-shield">ADM</div>
@@ -480,7 +480,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-25.js?v=67.25"></script>
+<script src="app-v67-26.js?v=67.26"></script>
 <div id="buildVersion" style="display:none">v67.25</div>
 </body>
 </html>
