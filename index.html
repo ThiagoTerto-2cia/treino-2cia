@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-38-1.css?v=67.38.1">
+<link rel="stylesheet" href="styles-v67-38-2.css?v=67.38.2">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -95,8 +95,12 @@
           <h3 id="sportsFeedTitle">Feed esportivo</h3>
           <p>Atividades concluídas pelos militares da unidade.</p>
         </div>
-        <button class="sports-feed-refresh" type="button" onclick="v6738LoadFeed(true)" aria-label="Atualizar feed">↻</button>
+        <div class="sports-feed-head-actions">
+          <button class="sports-feed-notifications" type="button" onclick="v67382ToggleNotifications(this)" aria-label="Notificações do feed" aria-expanded="false">🔔<span id="feedNotificationBadge" hidden>0</span></button>
+          <button class="sports-feed-refresh" type="button" onclick="v67382RefreshFeed(this)" aria-label="Atualizar feed">↻</button>
+        </div>
       </div>
+      <div id="feedNotificationsPanel" class="feed-notifications-panel" hidden></div>
 
       <details class="sports-feed-settings">
         <summary>📍 Localização nas minhas atividades</summary>
@@ -550,7 +554,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-38-1.js?v=67.38.1"></script>
-<div id="buildVersion" style="display:none">v67.38.1</div>
+<script src="app-v67-38-2.js?v=67.38.2"></script>
+<div id="buildVersion" style="display:none">v67.38.2</div>
 </body>
 </html>
