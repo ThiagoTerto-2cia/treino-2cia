@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#8b0000">
 <title>Treino 2ª CIA</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles-v67-37.css?v=67.37">
+<link rel="stylesheet" href="styles-v67-38.css?v=67.38">
 </head>
 <body><div id="prToast" class="pr-toast"></div>
 <div id="splash" class="splash">
@@ -87,6 +87,35 @@
         <span class="feature-icon">🛡️</span><span><b>CORE OPERACIONAL</b><small>Estabilidade, carga e controle para o serviço</small></span><span class="chev">›</span>
       </button>
     </div>
+
+    <section class="sports-feed-shell" aria-labelledby="sportsFeedTitle">
+      <div class="sports-feed-head">
+        <div>
+          <span class="sports-feed-kicker">COMUNIDADE 2ª CIA</span>
+          <h3 id="sportsFeedTitle">Feed esportivo</h3>
+          <p>Atividades concluídas pelos militares da unidade.</p>
+        </div>
+        <button class="sports-feed-refresh" type="button" onclick="v6738LoadFeed(true)" aria-label="Atualizar feed">↻</button>
+      </div>
+
+      <details class="sports-feed-settings">
+        <summary>📍 Localização nas minhas atividades</summary>
+        <div class="sports-feed-settings-body">
+          <label class="sports-feed-toggle-row">
+            <input id="feedLocationEnabled" type="checkbox" onchange="v6738SaveFeedLocationPrefs()">
+            <span>Mostrar uma localização nas próximas atividades</span>
+          </label>
+          <label class="sports-feed-location-label">Localização que será exibida
+            <input id="feedLocationText" maxlength="80" placeholder="Ex.: 2ª CIA — Currais Novos/RN" oninput="v6738SaveFeedLocationPrefs()">
+          </label>
+          <small>A localização é opcional e só é publicada quando você ativar esta opção. Não são enviadas coordenadas GPS.</small>
+        </div>
+      </details>
+
+      <div id="sportsFeed" class="sports-feed-list">
+        <div class="sports-feed-state">Carregando atividades…</div>
+      </div>
+    </section>
 
     <div class="motto">“Disciplina hoje,<br>prontidão sempre.”</div>
   </section>
@@ -521,7 +550,7 @@
 
 <script src="cloud-config.js?v=67.7"></script>
 <script src="data.js"></script>
-<script src="app-v67-37.js?v=67.37"></script>
+<script src="app-v67-38.js?v=67.38"></script>
 <div id="buildVersion" style="display:none">v67.37</div>
 </body>
 </html>
